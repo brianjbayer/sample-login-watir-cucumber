@@ -3,13 +3,13 @@
 This is a simple sample project demonstrating a simple login feature 
 and verifying the critical elements on the login page.
 
-##Requirements:
+## Requirements:
 
 Install Chrome if you don't already have it.
 
 Install ChromeDriver if you don't already have it.
 
-Install a Ruby version manager (tests run with Ruby 2.2.0). 
+Install a Ruby version manager (tests run with Ruby 2.4.0).
 
 Install bundler (if not already installed for your Ruby):
 
