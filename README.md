@@ -1,4 +1,4 @@
-# MY LOGIN CUCUMBER PROJECT
+# sample-login-watir-cucumber
 
 This is an example 
 [Watir](http://watir.com)-[Cucumber](https://cucumber.io)-[Ruby](https://www.ruby-lang.org)
