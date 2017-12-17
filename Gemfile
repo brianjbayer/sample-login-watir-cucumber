@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'cucumber'
-gem 'rspec'
-gem 'rake'
-gem 'page-object'
 gem 'eventually_helper'
+gem 'page-object'
+gem 'rake'
+gem 'rspec'
+gem 'rubocop', require: false
