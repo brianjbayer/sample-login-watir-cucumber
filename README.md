@@ -68,7 +68,7 @@ The following browsers were working on Mac at the time of this commit:
 (although I can no longer seem to find the link)
 
 ## Requirements
-* Ruby 2.4.0
+* Ruby 2.4.4
 * To run the tests using a specific browser requires that browser 
 be installed as well as any required browser driver
 (e.g. to run the tests in the Chrome Browser requires
