@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 def headless_browser(headless_browser)
   # split on underscores or whitespace

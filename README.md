@@ -49,18 +49,27 @@ To run the automated tests using Cucumber, execute...
 #### Specify Browser
 `SPEC_BROWSER=`...
 
-* Mostly, this uses a pass thru and convert to symbol approach 
+* Mostly, this uses a pass thru and convert to symbol approach
   * **example:** "chrome" converts to `:chrome` which is a Watir browser
 * Headless browsers are handled by detecting the word "headless"
 and sending that as an argument to the browser specified
-  * **example:** "chrome_headless" converts to `:chrome` 
+  * **example:** "chrome_headless" converts to `:chrome`
   with `headless` argument
 
+#### Browser Drivers
+This project uses the
+[chromedriver-helper](https://github.com/flavorjones/chromedriver-helper)
+and
+[geckodriver-helper](https://github.com/DevicoSolutions/geckodriver-helper)
+gems to automatically download and maintain chromdriver and
+geckodriver (Firefox).
+
+#### Supported Browsers
 The following browsers were working on Mac at the time of this commit:
-* `chrome` - Google Chrome (requires Chrome and chromedriver)
-* `chrome_headless` - Google Chrome run in headless mode (requires Chrome > 59 and chromedriver)
-* `firefox` - Mozilla Firefox (requires Firefox and geckodriver)
-* `firefox_headless` - Mozilla Firefox (requires Firefox and geckodriver)
+* `chrome` - Google Chrome (requires Chrome)
+* `chrome_headless` - Google Chrome run in headless mode (requires Chrome > 59)
+* `firefox` - Mozilla Firefox (requires Firefox)
+* `firefox_headless` - Mozilla Firefox (requires Firefox)
 * `safari` - Apple Safari (requires Safari)
 
 
@@ -69,10 +78,10 @@ The following browsers were working on Mac at the time of this commit:
 
 ## Requirements
 * Ruby 2.4.4
-* To run the tests using a specific browser requires that browser 
-be installed as well as any required browser driver
+* To run the tests using a specific browser requires that browser
+be installed
 (e.g. to run the tests in the Chrome Browser requires
-Chrome and chromedriver be installed).
+Chrome be installed).
 
 Install bundler (if not already installed for your Ruby):
 

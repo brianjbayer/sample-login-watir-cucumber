@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Given(/^user is on the login page$/) do
   visit(LoginPage) { |page| expect(page.current_url).to eq(page.page_url_value) }
 end
