@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The Sample Login Page
 class LoginPage < BasePage
   page_url 'http://the-internet.herokuapp.com/login'

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 When(/^user logs in with valid credentials$/) do
   on(LoginPage).login_with_credentials('tomsmith', 'SuperSecretPassword!')
