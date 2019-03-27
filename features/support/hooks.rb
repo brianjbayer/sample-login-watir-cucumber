@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'webdrivers'
 
 def headless_browser(headless_browser)
   # split on underscores or whitespace

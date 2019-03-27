@@ -58,10 +58,8 @@ and sending that as an argument to the browser specified
 
 #### Browser Drivers
 This project uses the
-[chromedriver-helper](https://github.com/flavorjones/chromedriver-helper)
-and
-[geckodriver-helper](https://github.com/DevicoSolutions/geckodriver-helper)
-gems to automatically download and maintain chromdriver and
+[Webdrivers](https://github.com/titusfortner/webdrivers)
+gem to automatically download and maintain chromedriver and
 geckodriver (Firefox).
 
 #### Supported Browsers
