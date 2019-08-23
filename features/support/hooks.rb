@@ -17,7 +17,7 @@ Before do
                else Watir::Browser.new browser_name.to_sym
                end
   else
-    STDERR.puts '>> USING DEFAULT (Watir) DRIVER <<'
+    warn '>> USING DEFAULT (Watir) DRIVER <<'
     @browser = Watir::Browser.new
   end
 end
