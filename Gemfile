@@ -9,4 +9,4 @@ gem 'rake'
 gem 'rspec'
 gem 'rubocop', require: false
 gem 'selenium-webdriver'
-gem 'webdrivers', '~> 3.0'
+gem 'webdrivers', '~> 4.0'
