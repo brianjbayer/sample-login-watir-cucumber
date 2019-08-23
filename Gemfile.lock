@@ -39,7 +39,7 @@ GEM
     multi_json (1.13.1)
     multi_test (0.1.2)
     net_http_ssl_fix (0.0.10)
-    nokogiri (1.10.2)
+    nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     page-object (2.2.6)
       page_navigation (>= 0.10)
