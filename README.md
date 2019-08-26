@@ -7,13 +7,16 @@ implementation of Acceptance Test Driven Development (ATDD).
 by replacing the existing tests.**
 
 These tests show how to use Watir-Cucumber to verify...
-* that critical elements are on a page
-* the ability to login as a user
+* That critical elements are on a page
+* The ability to login as a user
 
 It also demonstrates the basic features
 of the Watir-Cucumber framework and how they can be extended.
-This example contains...
-* support for multiple browsers
+
+### Contents of this Framework
+This framework contains support for...
+* Using Selenium Standalone containers eliminating the need for locally installed browsers or drivers
+* Multiple local browsers with automatic driver management
 
 ## To Run the Automated Tests
 The tests either can be run directly by the Cucumber runner or by the
@@ -55,6 +58,7 @@ To run the automated tests using Cucumber, execute...
 and sending that as an argument to the browser specified
   * **example:** "chrome_headless" converts to `:chrome`
   with `headless` argument
+* Container based browsers are handled by detecting the word "container"
 
 #### Browser Drivers
 This project uses the
@@ -66,13 +70,57 @@ geckodriver (Firefox).
 The following browsers were working on Mac at the time of this commit:
 * `chrome` - Google Chrome (requires Chrome)
 * `chrome_headless` - Google Chrome run in headless mode (requires Chrome > 59)
+* `chrome_container` - Selenium Standalone Chrome Debug container (requires this container 
+to be already running on the default ports)
+* `chrome_headless_container` - Selenium Standalone Chrome Debug container (requires this container 
+to be already running on the default ports)
 * `firefox` - Mozilla Firefox (requires Firefox)
 * `firefox_headless` - Mozilla Firefox (requires Firefox)
+* `firefox_container` = Selenium Standalone Chrome Debug container (requires this container 
+to be already running on the default ports)
+* `firefox_headless_container` = Selenium Standalone Chrome Debug container (requires this container 
+to be already running on the default ports)
 * `safari` - Apple Safari (requires Safari)
 
 
 *R.I.P.* `phantomjs` - PhantomJS headless browser is no longer supported by Watir
 (although I can no longer seem to find the link)
+
+### To Run Using the Selenium Standalone Debug Containers
+These tests can be run using the Selenium Standalone Debug containers for both
+Chrome and Firefox.  These *debug* containers run a VNC server that allow you to see
+the tests running in the browser in that container.  These Selenium Standalone Debug containers
+must be running on the default port of `4444`.
+
+For more information on these Selenium Standalone Debug containers see https://github.com/SeleniumHQ/docker-selenium.
+
+#### Prerequisites
+You must have docker installed and running on your local machine.
+
+To use the VNC server, you must have a VNC client on your local machine (e.g. Screen Sharing application on Mac).
+
+#### To Run Using Selenium Standalone Chrome Debug Container
+1. Ensure Docker is running on your local machine
+2. Run the Selenium Standalone Chrome Debug container on the default ports of 4444 and 5900 
+for the VNC server  
+`docker run -d -p 4444:4444 -p 5900:5900 -v /dev/shm:/dev/shm selenium/standalone-chrome-debug:latest`
+3. Wait for the Selenium Standalone Chrome Debug container to be running (e.g. 'docker ps')
+4. Run the tests using the `chrome_container`  
+`SPEC_BROWSER=chrome_container bundle exec cucumber`
+
+#### To Run Using Selenium Standalone Firefox Debug Container
+1. Ensure Docker is running on your local machine
+2. Run the Selenium Standalone Firefox Debug container on the default ports of 4444 and 5900 
+for the VNC server  
+`docker run -d -p 4444:4444 -p 5900:5900 -v /dev/shm:/dev/shm selenium/standalone-firefox-debug:latest`
+3. Wait for the Selenium Standalone Firefox Debug container to be running (e.g. 'docker ps')
+4. Run the tests using the `firefox_container`  
+`SPEC_BROWSER=firefox_headless_container bundle exec cucumber`
+
+#### To See the Tests Run Using the VNC Server
+1. Connect to vnc://localhost:5900 (On Mac you can simply enter this address into a Browser)
+2. When prompted for the (default) password, enter `secret`
+
 
 ## Requirements
 * Ruby 2.4.5
