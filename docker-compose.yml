@@ -1,0 +1,25 @@
+version: '2.1'
+services:
+  browsertests:
+    build: .
+    container_name: sample-login-watir-cucumber-tests
+    volumes:
+      - .:/app
+    environment:
+      - SPEC_BROWSER=chrome_container
+      - CONTAINER=seleniumchrome
+    command: bundle exec cucumber
+    depends_on:
+      seleniumchrome:
+        condition: service_healthy
+
+  seleniumchrome:
+    image: selenium/standalone-chrome
+    container_name: selenium-chrome
+    volumes:
+      - /dev/shm:/dev/shm
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail -X HEAD http://localhost:4444/wd/hub"]
+      interval: 2s
+      timeout: 5s
+      retries: 30

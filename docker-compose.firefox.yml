@@ -1,0 +1,25 @@
+version: '2.1'
+services:
+  browsertests:
+    build: .
+    container_name: sample-login-watir-cucumber-tests
+    volumes:
+      - .:/app
+    environment:
+      - SPEC_BROWSER=firefox_container
+      - CONTAINER=seleniumfirefox
+    command: bundle exec cucumber
+    depends_on:
+      seleniumfirefox:
+        condition: service_healthy
+
+  seleniumfirefox:
+    image: selenium/standalone-firefox
+    container_name: selenium-firefox
+    volumes:
+      - /dev/shm:/dev/shm
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail -X HEAD http://localhost:4444/wd/hub"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
