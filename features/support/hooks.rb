@@ -2,26 +2,36 @@
 
 require 'webdrivers'
 
-def headless_browser(headless_browser)
-  # split on underscores or whitespace
-  remove_headless = headless_browser.tr('_', ' ').split
-  remove_headless.delete('headless')
-  remove_headless.join('_')
-end
+STANDALONE = 'http://localhost:4444/wd/hub'
 
 Before do
-  if ENV['SPEC_BROWSER']
-    browser_name = ENV['SPEC_BROWSER'].downcase.strip
-    @browser = if browser_name.include?('headless')
-                 Watir::Browser.new headless_browser(browser_name).to_sym, headless: true
-               else Watir::Browser.new browser_name.to_sym
-               end
-  else
-    warn '>> USING DEFAULT (Watir) DRIVER <<'
-    @browser = Watir::Browser.new
-  end
+  @browser = if ENV['SPEC_BROWSER']
+               create_browser ENV['SPEC_BROWSER'].downcase.strip
+             else
+               warn '>> USING DEFAULT (Watir) DRIVER <<'
+               Watir::Browser.new
+             end
 end
 
 After do
   @browser.close
+end
+
+def create_browser(specified_browser)
+  browser_options = specified_browser.tr('_', ' ').split
+
+  headless = !browser_options.delete('headless').nil?
+  container = !browser_options.delete('container').nil?
+  # Assume whatever is left is the browser type (e.g. chrome)
+  browser_type = browser_options.first.to_sym
+
+  configure_browser(browser_type, headless, container)
+end
+
+def configure_browser(browser_type, headless, container)
+  if container
+    Watir::Browser.new browser_type, url: STANDALONE, headless: headless
+  else
+    Watir::Browser.new browser_type, headless: headless
+  end
 end
