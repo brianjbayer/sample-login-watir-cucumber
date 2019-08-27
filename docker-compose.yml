@@ -2,7 +2,7 @@ version: '2.1'
 services:
   browsertests:
     build: .
-    container_name: sample-login-watir-cucumber-tests
+    container_name: sample-login-watir-cucumber
     volumes:
       - .:/app
     environment:
@@ -14,7 +14,7 @@ services:
         condition: service_healthy
 
   seleniumchrome:
-    image: selenium/standalone-chrome
+    image: selenium/standalone-chrome:latest
     container_name: selenium-chrome
     volumes:
       - /dev/shm:/dev/shm
