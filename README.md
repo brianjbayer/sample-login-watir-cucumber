@@ -13,12 +13,40 @@ These tests show how to use Watir-Cucumber to verify...
 It also demonstrates the basic features
 of the Watir-Cucumber framework and how they can be extended.
 
+### Run Locally or in Containers
+This project can be run locally or fully in containers using Docker.
+
 ### Contents of this Framework
 This framework contains support for...
+* Local or fully containerized execution
 * Using Selenium Standalone containers eliminating the need for locally installed browsers or drivers
 * Multiple local browsers with automatic driver management
 
-## To Run the Automated Tests
+## To Run the Automated Tests in Docker
+The tests in this project can be run be run fully in Docker
+assuming that Docker is installed and running.  This will build
+a docker image of this project and execute the tests against
+a Selenium Standalone container.
+
+### Prerequisites
+You must have docker installed and running on your local machine.
+
+### To Run Fully in Docker
+1. Ensure Docker is running
+2. Run the project docker-compose.yml file (this runs using the Chrome
+standalone container)
+```
+docker-compose up
+```
+
+#### To Run Using the Firefox Standalone Container
+2. Run the project docker-compose.yml file (this runs using the Firefox
+   standalone container
+```
+docker-compose -f docker-compose.firefox.yml up
+```
+
+## To Run the Automated Tests Locally
 The tests either can be run directly by the Cucumber runner or by the
 supplied Rakefile.
 
@@ -35,7 +63,7 @@ bundle exec cucumber
 SPEC_BROWSER=chrome bundle exec rake
 ```
 ```
-SPEC_BROWSER=firefox_headless bundle exec cucumber
+SPEC_BROWSER=firefox_headless_container bundle exec cucumber
 ```
 
 ### To Run Using Rake
@@ -102,27 +130,36 @@ To use the VNC server, you must have a VNC client on your local machine (e.g. Sc
 #### To Run Using Selenium Standalone Chrome Debug Container
 1. Ensure Docker is running on your local machine
 2. Run the Selenium Standalone Chrome Debug container on the default ports of 4444 and 5900 
-for the VNC server  
-`docker run -d -p 4444:4444 -p 5900:5900 -v /dev/shm:/dev/shm selenium/standalone-chrome-debug:latest`
+for the VNC server
+```
+docker run -d -p 4444:4444 -p 5900:5900 -v /dev/shm:/dev/shm selenium/standalone-chrome-debug:latest`
+```
 3. Wait for the Selenium Standalone Chrome Debug container to be running (e.g. 'docker ps')
-4. Run the tests using the `chrome_container`  
-`SPEC_BROWSER=chrome_container bundle exec cucumber`
+4. Run the tests using the `chrome_container`
+```
+SPEC_BROWSER=chrome_container bundle exec cucumber`
+```
 
 #### To Run Using Selenium Standalone Firefox Debug Container
 1. Ensure Docker is running on your local machine
 2. Run the Selenium Standalone Firefox Debug container on the default ports of 4444 and 5900 
-for the VNC server  
-`docker run -d -p 4444:4444 -p 5900:5900 -v /dev/shm:/dev/shm selenium/standalone-firefox-debug:latest`
+for the VNC server
+```
+docker run -d -p 4444:4444 -p 5900:5900 -v /dev/shm:/dev/shm selenium/standalone-firefox-debug:latest`
+```
 3. Wait for the Selenium Standalone Firefox Debug container to be running (e.g. 'docker ps')
-4. Run the tests using the `firefox_container`  
-`SPEC_BROWSER=firefox_headless_container bundle exec cucumber`
+4. Run the tests using the `firefox_container`
+```
+SPEC_BROWSER=firefox_headless_container bundle exec cucumber`
+```
 
 #### To See the Tests Run Using the VNC Server
-1. Connect to vnc://localhost:5900 (On Mac you can simply enter this address into a Browser)
+1. Connect to [vnc://localhost:5900](vnc://localhost:5900) (On Mac you can simply enter this address into a Browser)
 2. When prompted for the (default) password, enter `secret`
 
+**NOTE:** Browsers in the containers are not visible in the VNC server when `headless`.
 
-## Requirements
+### Requirements
 * Ruby 2.4.5
 * To run the tests using a specific browser requires that browser
 be installed

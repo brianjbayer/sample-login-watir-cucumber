@@ -2,8 +2,6 @@
 
 require 'webdrivers'
 
-STANDALONE = 'http://localhost:4444/wd/hub'
-
 Before do
   @browser = if ENV['SPEC_BROWSER']
                create_browser ENV['SPEC_BROWSER'].downcase.strip
@@ -30,8 +28,16 @@ end
 
 def configure_browser(browser_type, headless, container)
   if container
-    Watir::Browser.new browser_type, url: STANDALONE, headless: headless
+    Watir::Browser.new browser_type, url: container_url(ENV['CONTAINER']), headless: headless
   else
     Watir::Browser.new browser_type, headless: headless
+  end
+end
+
+def container_url(specified_container)
+  if specified_container
+    "http://#{specified_container}:4444/wd/hub"
+  else
+    'http://localhost:4444/wd/hub'
   end
 end
