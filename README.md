@@ -14,11 +14,15 @@ It also demonstrates the basic features
 of the Watir-Cucumber framework and how they can be extended.
 
 ### Run Locally or in Containers
-This project can be run locally or fully in containers using Docker.
+This project can be run...
+* Fully locally running the tests against a local browser
+* Locally running the tests against a containerized browser
+* Fully in 2 separate Docker containers, one containing the
+tests the other the browser
 
 ### Contents of this Framework
 This framework contains support for...
-* Local or fully containerized execution
+* Local thru fully containerized execution
 * Using Selenium Standalone containers eliminating the need for locally installed browsers or drivers
 * Multiple local browsers with automatic driver management
 
