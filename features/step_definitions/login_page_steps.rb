@@ -5,26 +5,15 @@ Given(/^user is on the login page$/) do
 end
 
 ### THEN STEPS ###
-Then(/^there must be a single, present username input field$/) do
-  username_input_field = on(LoginPage).username_input_elements
-  there_must_be_a_single_present(username_input_field)
+Then(/^there must be a place for a username$/) do
+  expect(on(LoginPage).username?).to be true
 end
 
-Then(/^there must be a single, present password input field$/) do
-  password_input_field = on(LoginPage).password_input_elements
-  there_must_be_a_single_present(password_input_field)
+Then(/^there must be a place for a password$/) do
+  expect(on(LoginPage).password?).to be true
 end
 
-Then(/^there must be a single, present submit button$/) do
-  login_submit_button = on(LoginPage).submit_button_elements
-  there_must_be_a_single_present(login_submit_button)
+Then(/^there must be a login button$/) do
+  expect(on(LoginPage).login_button?).to be true
 end
 
-# TODO: Use metaprogramming to extend this method into???
-### SUPPORT METHODS ###
-def there_must_be_a_single_present(elements)
-  expect(elements.count).to eq(1)
-
-  the_element = elements[0]
-  expect(the_element.present?).to be true
-end

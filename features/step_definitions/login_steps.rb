@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-When(/^user logs in with valid credentials$/) do
+When(/^user logs in with username and password$/) do
   on(LoginPage).login_with_credentials('tomsmith', 'SuperSecretPassword!')
 end
 

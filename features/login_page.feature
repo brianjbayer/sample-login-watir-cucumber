@@ -1,8 +1,7 @@
 Feature: Login Page Elements
 
-  Scenario: Login Page must have username and password input fields and submit button
+  Scenario: Login Page must have a username, password, and login button
     When user is on the login page
-    Then there must be a single, present username input field
-    And there must be a single, present password input field
-    And there must be a single, present submit button
-
+    Then there must be a place for a username
+    And there must be a place for a password
+    And there must be a login button
