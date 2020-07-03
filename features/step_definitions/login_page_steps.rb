@@ -16,4 +16,3 @@ end
 Then(/^there must be a login button$/) do
   expect(on(LoginPage).login_button?).to be true
 end
-
