@@ -2,6 +2,7 @@
 
 source 'https://rubygems.org'
 
+gem 'bundler-audit', require: false
 gem 'cucumber'
 gem 'eventually_helper'
 gem 'page-object'

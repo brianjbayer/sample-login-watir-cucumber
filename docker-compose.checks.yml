@@ -1,0 +1,8 @@
+version: '2.1'
+services:
+  browsertests_checks:
+    build: .
+    container_name: sample-login-watir-cucumber
+    volumes:
+      - .:/app
+    command: bundle exec rake checks
