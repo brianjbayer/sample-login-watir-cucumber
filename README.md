@@ -164,7 +164,7 @@ SPEC_BROWSER=firefox_headless_container bundle exec cucumber`
 **NOTE:** Browsers in the containers are not visible in the VNC server when `headless`.
 
 ### Requirements
-* Ruby 2.4.5
+* Ruby 2.6.3
 * To run the tests using a specific browser requires that browser
 be installed
 (e.g. to run the tests in the Chrome Browser requires
