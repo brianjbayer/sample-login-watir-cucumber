@@ -136,12 +136,12 @@ To use the VNC server, you must have a VNC client on your local machine (e.g. Sc
 2. Run the Selenium Standalone Chrome Debug container on the default ports of 4444 and 5900 
 for the VNC server
 ```
-docker run -d -p 4444:4444 -p 5900:5900 -v /dev/shm:/dev/shm selenium/standalone-chrome-debug:latest`
+docker run -d -p 4444:4444 -p 5900:5900 -v /dev/shm:/dev/shm selenium/standalone-chrome-debug:latest
 ```
 3. Wait for the Selenium Standalone Chrome Debug container to be running (e.g. 'docker ps')
 4. Run the tests using the `chrome_container`
 ```
-SPEC_BROWSER=chrome_container bundle exec cucumber`
+SPEC_BROWSER=chrome_container bundle exec cucumber
 ```
 
 #### To Run Using Selenium Standalone Firefox Debug Container
@@ -149,12 +149,12 @@ SPEC_BROWSER=chrome_container bundle exec cucumber`
 2. Run the Selenium Standalone Firefox Debug container on the default ports of 4444 and 5900 
 for the VNC server
 ```
-docker run -d -p 4444:4444 -p 5900:5900 -v /dev/shm:/dev/shm selenium/standalone-firefox-debug:latest`
+docker run -d -p 4444:4444 -p 5900:5900 -v /dev/shm:/dev/shm selenium/standalone-firefox-debug:latest
 ```
 3. Wait for the Selenium Standalone Firefox Debug container to be running (e.g. 'docker ps')
 4. Run the tests using the `firefox_container`
 ```
-SPEC_BROWSER=firefox_headless_container bundle exec cucumber`
+SPEC_BROWSER=firefox_headless_container bundle exec cucumber
 ```
 
 #### To See the Tests Run Using the VNC Server

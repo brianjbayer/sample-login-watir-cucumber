@@ -1,2 +1,4 @@
+AllCops:
+  NewCops: disable
 Layout/LineLength:
     Max: 120
