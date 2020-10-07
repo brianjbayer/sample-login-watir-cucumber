@@ -20,7 +20,7 @@ jobs:
         run: docker-compose --version
 
       - name: pull
-        run: docker-compose -f docker-compose.checks.yml pull
+        run: docker-compose -f docker-compose.yml -f docker-compose.checks.yml pull
 
       - name: Run Checks
-        run: docker-compose -f docker-compose.checks.yml up
+        run: docker-compose -f docker-compose.yml -f docker-compose.checks.yml up

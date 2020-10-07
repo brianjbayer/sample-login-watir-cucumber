@@ -1,8 +1,8 @@
-version: '2.1'
+version: '3.4'
 services:
-  browsertests_checks:
-    build: .
-    container_name: sample-login-watir-cucumber
-    volumes:
-      - .:/app
+  browsertests:
+    build:
+      context: .
+      target: secscan
+    container_name: sample-login-watir-cucumber-dev
     command: bundle exec rake checks

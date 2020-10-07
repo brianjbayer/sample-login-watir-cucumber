@@ -1,17 +1,12 @@
-version: '2.1'
+version: '3.4'
 services:
   browsertests:
-    build: .
-    container_name: sample-login-watir-cucumber
-    volumes:
-      - .:/app
     environment:
       - SPEC_BROWSER=firefox_container
       - CONTAINER=seleniumfirefox
-    command: bundle exec cucumber
+    command: ./script/runtests
     depends_on:
-      seleniumfirefox:
-        condition: service_healthy
+      - seleniumfirefox
 
   seleniumfirefox:
     image: selenium/standalone-firefox:latest

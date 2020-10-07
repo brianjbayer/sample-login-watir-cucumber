@@ -37,17 +37,18 @@ You must have docker installed and running on your local machine.
 
 ### To Run Fully in Docker
 1. Ensure Docker is running
-2. Run the project docker-compose.yml file (this runs using the Chrome
-standalone container)
+2. Run the project docker-compose.yml file with the
+   docker-compose.seleniumchrome.yml file (this runs using the Chrome
+   standalone container)
 ```
-docker-compose up
+docker-compose -f docker-compose.yml -f docker-compose.seleniumchrome.yml up
 ```
 
 #### To Run Using the Firefox Standalone Container
 2. Run the project docker-compose.yml file (this runs using the Firefox
    standalone container
 ```
-docker-compose -f docker-compose.firefox.yml up
+docker-compose -f docker-compose.yml -f docker-compose.seleniumfirefox.yml up
 ```
 
 ## To Run the Automated Tests Locally

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+COUNTER=0
+REMOTE_BROWSER="http://${CONTAINER}:4444/wd/hub/status"
+echo "Waiting for ${REMOTE_BROWSER} to become available"
+until wget --spider -q "${REMOTE_BROWSER}" &>/dev/null; do
+  printf "."
+  sleep 1
+  COUNTER=$((COUNTER + 1))
+  if [ $COUNTER -eq 30 ] ; then
+    echo "✘"
+    exit 1
+  fi
+done
+
+echo "✔"
+
+# Run the tests (with any passed in args)
+bundle exec cucumber "$@"
