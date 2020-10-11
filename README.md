@@ -109,9 +109,9 @@ to be already running on the default ports)
 to be already running on the default ports)
 * `firefox` - Mozilla Firefox (requires Firefox)
 * `firefox_headless` - Mozilla Firefox (requires Firefox)
-* `firefox_container` = Selenium Standalone Chrome Debug container (requires this container 
+* `firefox_container` - Selenium Standalone Chrome Debug container (requires this container 
 to be already running on the default ports)
-* `firefox_headless_container` = Selenium Standalone Chrome Debug container (requires this container 
+* `firefox_headless_container` - Selenium Standalone Chrome Debug container (requires this container 
 to be already running on the default ports)
 * `safari` - Apple Safari (requires Safari)
 
@@ -181,6 +181,35 @@ Install gems (from project root):
 
 ```
 $ bundle
+```
+
+## Development
+This project can be developed locally or using the supplied basic,
+container-based development environment which include `vim` and `git`.
+
+### To Develop Using the Container-based Development Environment
+To develop using the supplied container-based development environment...
+1. Build the development environment image specifying the `devenv` build
+   stage as the target and supplying a name (tag) for the image.
+```
+docker build --no-cache --target devenv -t browsertests-dev .
+```
+2. Run the built development environment image either on its own or
+in the docker-compose environment with either the Selenium Chrome
+or Firefox container.  By default the development environment container
+executes the `/bin/ash` shell providing a command line interface. When
+running the development environment container, you must specify the path
+to this project's source code.
+
+To run the development environment on its own, use `docker run`...
+```
+docker run -it --rm -v $(pwd):/app browsertests-dev
+```
+
+To run the development environment in the docker-compose environment,
+use the `docker-compose.dev.yml` file...
+```
+IMAGE=browsertests-dev SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.seleniumchrome.yml run browsertests /bin/ash
 ```
 
 ## Additional Information

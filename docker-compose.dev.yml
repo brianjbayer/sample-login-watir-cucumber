@@ -1,0 +1,7 @@
+version: '3.4'
+services:
+  browsertests:
+    image: "${IMAGE}"
+    container_name: "sample-login-watir-cucumber-${IMAGE}"
+    volumes:
+      - ${SRC}:/app
