@@ -1,9 +1,9 @@
 #!/bin/sh
 
 COUNTER=0
-REMOTE_BROWSER="http://${CONTAINER}:4444/wd/hub/status"
-echo "Waiting for ${REMOTE_BROWSER} to become available"
-until wget --spider -q "${REMOTE_BROWSER}" &>/dev/null; do
+REMOTE_STATUS="${REMOTE}/status"
+echo "Waiting for ${REMOTE_STATUS} to become available"
+until wget --spider -q "${REMOTE_STATUS}" &>/dev/null; do
   printf "."
   sleep 1
   COUNTER=$((COUNTER + 1))

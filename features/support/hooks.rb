@@ -3,11 +3,12 @@
 require 'webdrivers'
 
 Before do
-  @browser = if ENV['SPEC_BROWSER']
-               create_browser ENV['SPEC_BROWSER'].downcase.strip
+  browser = ENV['BROWSER']
+  remote_url = ENV['REMOTE']
+  @browser = if remote_url
+               create_remote_browser(browser, remote_url)
              else
-               warn '>> USING DEFAULT (Watir) DRIVER <<'
-               Watir::Browser.new
+               create_local_browser browser
              end
 end
 
@@ -15,29 +16,29 @@ After do
   @browser.close
 end
 
-def create_browser(specified_browser)
-  browser_options = specified_browser.tr('_', ' ').split
-
-  headless = !browser_options.delete('headless').nil?
-  container = !browser_options.delete('container').nil?
-  # Assume whatever is left is the browser type (e.g. chrome)
-  browser_type = browser_options.first.to_sym
-
-  configure_browser(browser_type, headless, container)
+### Support ###
+def create_remote_browser(browser_info, remote_url)
+  browser = BrowserInfo.new browser_info
+  Watir::Browser.new browser.name, url: remote_url, headless: browser.headless
 end
 
-def configure_browser(browser_type, headless, container)
-  if container
-    Watir::Browser.new browser_type, url: container_url(ENV['CONTAINER']), headless: headless
-  else
-    Watir::Browser.new browser_type, headless: headless
+def create_local_browser(browser_info)
+  unless browser_info
+    warn '>> USING DEFAULT WATIR DRIVER <<'
+    return Watir::Browser.new
   end
+  browser = BrowserInfo.new browser_info
+  Watir::Browser.new browser.name, headless: browser.headless
 end
 
-def container_url(specified_container)
-  if specified_container
-    "http://#{specified_container}:4444/wd/hub"
-  else
-    'http://localhost:4444/wd/hub'
+# Parses out the browser name and attributes like headless
+class BrowserInfo
+  attr_reader :name
+  attr_reader :headless
+  def initialize(browser_info)
+    browser_options = browser_info.downcase.strip.tr('_', ' ').split
+    @headless = !browser_options.delete('headless').nil?
+    # Assume whatever is left is the browser name (e.g. chrome)
+    @name = browser_options.first.to_sym
   end
 end
