@@ -1,8 +1,7 @@
 # sample-login-watir-cucumber
 
-This is an example 
-[Watir](http://watir.com)-[Cucumber](https://cucumber.io)-[Ruby](https://www.ruby-lang.org)
-implementation of Acceptance Test Driven Development (ATDD).
+This is an example of Acceptance Test Driven Development (ATDD) using
+[Watir](http://watir.com), [Cucumber](https://cucumber.io), [Ruby](https://www.ruby-lang.org).
 **However, it also provides a somewhat extensible framework that can be reused
 by replacing the existing tests.**
 
@@ -36,6 +35,7 @@ a Selenium Standalone container.
 You must have docker installed and running on your local machine.
 
 ### To Run Fully in Docker
+#### To Run Using the Chrome Standalone Container
 1. Ensure Docker is running
 2. Run the project docker-compose.yml file with the
    docker-compose.seleniumchrome.yml file (this runs using the Chrome
@@ -45,6 +45,7 @@ docker-compose -f docker-compose.yml -f docker-compose.seleniumchrome.yml up
 ```
 
 #### To Run Using the Firefox Standalone Container
+1. Ensure Docker is running
 2. Run the project docker-compose.yml file (this runs using the Firefox
    standalone container
 ```
@@ -65,10 +66,10 @@ bundle exec cucumber
 ```
 #### Browsers ####
 ```
-SPEC_BROWSER=chrome bundle exec rake
+BROWSER=chrome bundle exec rake
 ```
 ```
-SPEC_BROWSER=firefox_headless_container bundle exec cucumber
+BROWSER=firefox_headless bundle exec cucumber
 ```
 
 ### To Run Using Rake
@@ -82,8 +83,17 @@ To run the automated tests using Cucumber, execute...
 *command-line-arguments* `bundle exec cucumber`
 
 ### Command Line Arguments
+#### Specify Remote (Container) URL
+`REMOTE=`...
+
+Specifying a Remote URL creates a remote browser of type
+specified by `BROWSER` at the specified remote URL  
+
+ **Example:**
+`REMOTE='http://localhost:4444/wd/hub'`
+
 #### Specify Browser
-`SPEC_BROWSER=`...
+`BROWSER=`...
 
 * Mostly, this uses a pass thru and convert to symbol approach
   * **example:** "chrome" converts to `:chrome` which is a Watir browser
@@ -91,7 +101,6 @@ To run the automated tests using Cucumber, execute...
 and sending that as an argument to the browser specified
   * **example:** "chrome_headless" converts to `:chrome`
   with `headless` argument
-* Container based browsers are handled by detecting the word "container"
 
 #### Browser Drivers
 This project uses the
@@ -103,21 +112,9 @@ geckodriver (Firefox).
 The following browsers were working on Mac at the time of this commit:
 * `chrome` - Google Chrome (requires Chrome)
 * `chrome_headless` - Google Chrome run in headless mode (requires Chrome > 59)
-* `chrome_container` - Selenium Standalone Chrome Debug container (requires this container 
-to be already running on the default ports)
-* `chrome_headless_container` - Selenium Standalone Chrome Debug container (requires this container 
-to be already running on the default ports)
 * `firefox` - Mozilla Firefox (requires Firefox)
 * `firefox_headless` - Mozilla Firefox (requires Firefox)
-* `firefox_container` - Selenium Standalone Chrome Debug container (requires this container 
-to be already running on the default ports)
-* `firefox_headless_container` - Selenium Standalone Chrome Debug container (requires this container 
-to be already running on the default ports)
 * `safari` - Apple Safari (requires Safari)
-
-
-*R.I.P.* `phantomjs` - PhantomJS headless browser is no longer supported by Watir
-(although I can no longer seem to find the link)
 
 ### To Run Using the Selenium Standalone Debug Containers
 These tests can be run using the Selenium Standalone Debug containers for both
@@ -140,9 +137,10 @@ for the VNC server
 docker run -d -p 4444:4444 -p 5900:5900 -v /dev/shm:/dev/shm selenium/standalone-chrome-debug:latest
 ```
 3. Wait for the Selenium Standalone Chrome Debug container to be running (e.g. 'docker ps')
-4. Run the tests using the `chrome_container`
+4. Run the tests specifing the `REMOTE` and using the `chrome` or `chrome_headless` browser
+   specification
 ```
-SPEC_BROWSER=chrome_container bundle exec cucumber
+REMOTE='http://localhost:4444/wd/hub' BROWSER=chrome bundle exec cucumber
 ```
 
 #### To Run Using Selenium Standalone Firefox Debug Container
@@ -153,9 +151,10 @@ for the VNC server
 docker run -d -p 4444:4444 -p 5900:5900 -v /dev/shm:/dev/shm selenium/standalone-firefox-debug:latest
 ```
 3. Wait for the Selenium Standalone Firefox Debug container to be running (e.g. 'docker ps')
-4. Run the tests using the `firefox_container`
+4. Run the tests specifying the `REMOTE` and using the `firefox` or `firefox_headless` browser
+   specification
 ```
-SPEC_BROWSER=firefox_headless_container bundle exec cucumber
+REMOTE='http://localhost:4444/wd/hub' BROWSER=firefox_headless bundle exec cucumber
 ```
 
 #### To See the Tests Run Using the VNC Server
