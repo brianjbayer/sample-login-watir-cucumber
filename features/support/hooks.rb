@@ -33,8 +33,8 @@ end
 
 # Parses out the browser name and attributes like headless
 class BrowserInfo
-  attr_reader :name
-  attr_reader :headless
+  attr_reader :name, :headless
+
   def initialize(browser_info)
     browser_options = browser_info.downcase.strip.tr('_', ' ').split
     @headless = !browser_options.delete('headless').nil?
