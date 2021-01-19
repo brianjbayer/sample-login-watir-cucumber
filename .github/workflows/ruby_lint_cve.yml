@@ -2,9 +2,9 @@ name: Check Ruby Style and Vulnerabilities
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   rubocop-bundler-audit:
