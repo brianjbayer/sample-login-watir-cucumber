@@ -1,0 +1,96 @@
+name: Check Deployable
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  # Use Docker Buildkit for builds
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+
+jobs:
+
+  code-standards-rubocop:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Docker version
+        run: docker --version
+
+      - name: Build linted app code deploy
+        run: docker build --no-cache --target lint -t app-lint .
+
+  security-scan-bundler-audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Docker version
+        run: docker --version
+
+      - name: Build security-scanned app code for deploy
+        run: docker build --no-cache --target secscan -t app-secscan .
+
+  build-deploy:
+    needs: [code-standards-rubocop, security-scan-bundler-audit]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: docker version
+        run: docker --version
+
+      - name: Build app deploy
+        run: docker build --no-cache -t app .
+
+  runtests-default-firefox:
+    needs: build-deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: docker version
+        run: docker --version
+
+      - name: docker-compose version
+        run: docker-compose --version
+        
+      - name: docker-compose config
+        run: docker-compose -f docker-compose.yml -f docker-compose.seleniumfirefox.yml config
+
+      - name: pull
+        run: docker-compose -f docker-compose.yml -f docker-compose.seleniumfirefox.yml pull
+
+      - name: Run Selenium Firefox
+        run: docker-compose -f docker-compose.yml -f docker-compose.seleniumfirefox.yml run -d seleniumfirefox
+
+      - name: Run Tests
+        run: docker-compose -f docker-compose.yml -f docker-compose.seleniumfirefox.yml run browsertests
+
+  runtests-chrome:
+    needs: build-deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: docker version
+        run: docker --version
+
+      - name: docker-compose version
+        run: docker-compose --version
+
+      - name: docker-compose config
+        run: docker-compose -f docker-compose.yml -f docker-compose.seleniumchrome.yml config
+
+      - name: docker-compose pull
+        run: docker-compose -f docker-compose.yml -f docker-compose.seleniumchrome.yml pull
+
+      - name: Run Selenium Chrome
+        run: docker-compose -f docker-compose.yml -f docker-compose.seleniumchrome.yml run -d seleniumchrome
+
+      - name: Run Tests
+        run: docker-compose -f docker-compose.yml -f docker-compose.seleniumchrome.yml run browsertests
