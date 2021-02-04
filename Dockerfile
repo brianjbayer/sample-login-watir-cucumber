@@ -1,6 +1,9 @@
 # sample-login-watir-cucumber
+### Base Image ###
+FROM ruby:2.6.6-alpine AS ruby-alpine
+
 ### Builder Stage ###
-FROM ruby:2.6.6-alpine AS builder
+FROM ruby-alpine AS builder
 # Need to add lib-ffi to build ffi gem native extensions
 RUN apk --update add --virtual build-dependencies build-base libffi-dev
 
@@ -19,7 +22,7 @@ FROM builder AS devenv
 RUN apk add --no-cache git
 RUN apk add --no-cache vim
 # Start devenv in (command line) shell
-CMD /bin/ash
+CMD sh
 
 ### Lint Stage ###
 FROM builder AS lint
@@ -36,18 +39,18 @@ COPY Rakefile ./
 RUN bundle exec rake bundle:audit
 
 ### Deploy Stage ###
-FROM ruby:2.6.6-alpine AS deploy
+FROM ruby-alpine AS deploy
 # Throw errors if Gemfile has been modified since Gemfile.lock
 RUN bundle config --global frozen 1
 
 RUN adduser -D deployer
 USER deployer
 
-# Copy over the built gems directory from builder image
-COPY --from=builder --chown=deployer /usr/local/bundle/ /usr/local/bundle/
-# Copy in app source
+# Copy over the built gems directory from the scanned layer
+COPY --from=secscan --chown=deployer /usr/local/bundle/ /usr/local/bundle/
+# Copy in app source from the lint layer
 WORKDIR /app
-COPY . .
+COPY --from=lint --chown=deployer . .
 
 # To Run the tests - altho this is orchestrated by the docker-compose.yml file
 #CMD bundle exec rake
