@@ -164,7 +164,7 @@ REMOTE='http://localhost:4444/wd/hub' BROWSER=firefox_headless bundle exec cucum
 **NOTE:** Browsers in the containers are not visible in the VNC server when `headless`.
 
 ### Requirements
-* Ruby 2.6.3
+* Ruby 2.7.4
 * To run the tests using a specific browser requires that browser
 be installed
 (e.g. to run the tests in the Chrome Browser requires
