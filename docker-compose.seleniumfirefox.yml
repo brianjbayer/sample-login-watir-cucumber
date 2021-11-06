@@ -11,10 +11,11 @@ services:
   seleniumfirefox:
     image: selenium/standalone-firefox:latest
     container_name: selenium-firefox
+    shm_size: 2gb
     volumes:
       - /dev/shm:/dev/shm
     healthcheck:
-      test: ["CMD-SHELL", "curl --silent --fail -X HEAD http://localhost:4444/wd/hub"]
-      interval: 2s
-      timeout: 5s
-      retries: 30
+      test: ["CMD-SHELL", '/opt/bin/check-grid.sh --host 0.0.0.0 --port 4444']
+      interval: 15s
+      timeout: 30s
+      retries: 5
