@@ -8,7 +8,7 @@ FROM ruby-alpine AS builder
 RUN apk --update add --virtual build-dependencies build-base libffi-dev
 
 # Use the same version of Bundler in the Gemfile.lock
-RUN gem install bundler -v 2.2.27
+RUN gem install bundler:2.2.30
 WORKDIR /app
 # Install the Ruby dependencies (defined in the Gemfile/Gemfile.lock)
 COPY Gemfile Gemfile.lock ./
