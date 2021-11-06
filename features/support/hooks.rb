@@ -28,7 +28,12 @@ def create_local_browser(browser_info)
     return Watir::Browser.new
   end
   browser = BrowserInfo.new browser_info
-  Watir::Browser.new browser.name, headless: browser.headless
+  # Not all watir browsers (Safari) support the headless option
+  if browser.headless
+    Watir::Browser.new browser.name, headless: browser.headless
+  else
+    Watir::Browser.new browser.name
+  end
 end
 
 # Parses out the browser name and attributes like headless
