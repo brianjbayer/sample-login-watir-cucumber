@@ -35,21 +35,22 @@ a Selenium Standalone container.
 You must have docker installed and running on your local machine.
 
 ### To Run Fully in Docker
-#### To Run Using the Chrome Standalone Container
+#### To Run Using the Default Chrome Standalone Container
 1. Ensure Docker is running
 2. Run the project docker-compose.yml file with the
-   docker-compose.seleniumchrome.yml file (this runs using the Chrome
+   docker-compose.selenium.yml file (this runs using the Chrome
    standalone container)
 ```
-docker-compose -f docker-compose.yml -f docker-compose.seleniumchrome.yml up
+docker-compose -f docker-compose.yml -f docker-compose.selenium.yml up
 ```
 
 #### To Run Using the Firefox Standalone Container
 1. Ensure Docker is running
-2. Run the project docker-compose.yml file (this runs using the Firefox
-   standalone container
+2. Run the project docker-compose.yml file with the
+   docker-compose.selenium.yml file and specify the Firefox container
+   with environment variables
 ```
-docker-compose -f docker-compose.yml -f docker-compose.seleniumfirefox.yml up
+BROWSER=firefox SELENIUM_IMAGE=selenium/standalone-firefox docker-compose -f docker-compose.yml -f docker-compose.selenium.yml up
 ```
 
 ## To Run the Automated Tests Locally
@@ -208,7 +209,7 @@ docker run -it --rm -v $(pwd):/app browsertests-dev
 To run the development environment in the docker-compose environment,
 use the `docker-compose.dev.yml` file...
 ```
-IMAGE=browsertests-dev SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.seleniumchrome.yml run browsertests /bin/ash
+IMAGE=browsertests-dev SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.selenium.yml run browsertests /bin/ash
 ```
 
 ## Additional Information

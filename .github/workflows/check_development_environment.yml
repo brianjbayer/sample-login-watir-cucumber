@@ -36,7 +36,7 @@ jobs:
       - name: Check source is mutated
         run: "[ -f foobear ]"
 
-  runtests-default-firefox:
+  runtests-default-chrome:
     needs: build-devenv
     runs-on: ubuntu-latest
 
@@ -52,40 +52,43 @@ jobs:
         run: docker-compose --version
 
       - name: docker-compose config
-        run: "SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.seleniumfirefox.yml config"
-
-      - name: pull
-        run: "SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.seleniumfirefox.yml pull"
-
-      - name: Run Selenium Firefox
-        run: "SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.seleniumfirefox.yml run -d seleniumfirefox"
-
-      - name: Run Tests
-        run: "SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.seleniumfirefox.yml run browsertests"
-
-  runtests-chrome:
-    needs: build-devenv
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v1
-      - name: docker version
-        run: docker --version
-
-      - name: Build app development environment 
-        run: "docker build --no-cache --target ${DEVENV} -t ${IMAGE} ." 
-
-      - name: docker-compose version
-        run: docker-compose --version
-
-      - name: docker-compose config
-        run: "SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.seleniumchrome.yml config"
+        run: "SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.selenium.yml config"
 
       - name: docker-compose pull
-        run: "SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.seleniumchrome.yml pull"
+        run: "SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.selenium.yml pull"
 
       - name: Run Selenium Chrome
-        run: "SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.seleniumchrome.yml run -d seleniumchrome"
+        run: "SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.selenium.yml run -d seleniumbrowser"
 
       - name: Run Tests
-        run: "SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.seleniumchrome.yml run browsertests"
+        run: "SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.selenium.yml run browsertests"
+
+  runtests-specified-firefox:
+    needs: build-devenv
+    runs-on: ubuntu-latest
+    env:
+      BROWSER: firefox
+      SELENIUM_IMAGE: selenium/standalone-firefox
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: docker version
+        run: docker --version
+
+      - name: Build app development environment 
+        run: "docker build --no-cache --target ${DEVENV} -t ${IMAGE} ." 
+
+      - name: docker-compose version
+        run: docker-compose --version
+
+      - name: docker-compose config
+        run: "SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.selenium.yml config"
+
+      - name: pull
+        run: "SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.selenium.yml pull"
+
+      - name: Run Selenium Firefox
+        run: "SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.selenium.yml run -d seleniumbrowser"
+
+      - name: Run Tests
+        run: "SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.selenium.yml run browsertests"
