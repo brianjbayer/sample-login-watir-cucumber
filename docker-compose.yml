@@ -2,6 +2,6 @@ version: '3.4'
 services:
   browsertests:
     build: .
-    container_name: sample-login-watir-cucumber
+    container_name: ${BROWSERTESTS_HOSTNAME:-browsertests}
     volumes:
       - .:/app

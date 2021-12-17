@@ -1,0 +1,71 @@
+#!/bin/sh
+# This script runs the project docker-compose framework.
+#
+# - The arguments to this script are passed to the browsertests service
+#   as command override
+#
+# - Any environment variables set when calling this script are passed
+#   through to the docker-compose framework
+#   (e.g. configuration other than the defaults
+#
+
+# Exit script on any errors
+set -e
+
+echo ''
+echo "ENVIRONMENT VARIABLES..."
+env
+echo ''
+
+echo 'DOCKER VERSION...'
+docker --version
+docker-compose --version
+echo ''
+
+echo 'DOCKER-COMPOSE COMMAND...'
+docker_compose_command='docker-compose -f docker-compose.yml -f docker-compose.selenium.yml '
+if [ ! -z ${BROWSERTESTS_IMAGE} ]; then
+  echo "...Using Development Environment with Image [${BROWSERTESTS_IMAGE}]"
+  docker_compose_command="${docker_compose_command} -f docker-compose.dev.yml "
+fi
+echo "...COMMAND: [${docker_compose_command}]"
+echo ''
+
+echo 'DOCKER-COMPOSE CONFIGURATION...'
+$docker_compose_command config
+echo ''
+
+echo 'DOCKER-COMPOSE PULLING...'
+set +e
+$docker_compose_command pull
+echo '...Allowing pull errors (for local images)'
+set -e
+echo ''
+
+echo 'DOCKER IMAGES...'
+docker images
+echo ''
+
+echo "DOCKER-COMPOSE RUNNING [$@]..."
+# Allow to fail but catch return code
+set +e
+$docker_compose_command run browsertests "$@"
+run_return_code=$?
+# NOTE return code must be caught before any other command
+set -e
+echo ''
+
+if [ $run_return_code -eq 0 ]; then
+    run_disposition='PASSED'
+else
+    run_disposition='FAILED'
+fi
+echo "...RUN [${run_disposition}] WITH RETURN CODE [${run_return_code}]"
+echo ''
+
+echo 'DOCKER-COMPOSE DOWN...'
+$docker_compose_command down
+echo ''
+
+echo "EXITING WITH ${run_disposition} RUN RETURN CODE ${run_return_code}"
+exit $run_return_code

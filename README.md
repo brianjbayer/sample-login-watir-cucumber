@@ -2,70 +2,135 @@
 
 This is an example of Acceptance Test Driven Development (ATDD) using
 [Watir](http://watir.com), [Cucumber](https://cucumber.io), [Ruby](https://www.ruby-lang.org).
+
 **However, it also provides a somewhat extensible framework that can be reused
 by replacing the existing tests.**
 
 These tests show how to use Watir-Cucumber to verify...
-* That critical elements are on a page
 * The ability to login as a user
+* That critical elements are on a page
 
-It also demonstrates the basic features
-of the Watir-Cucumber framework and how they can be extended.
+It also demonstrates the basic features of the
+Watir-Cucumber framework and how they can be extended.
 
-### Run Locally or in Containers
+## Run Locally or in Containers
 This project can be run...
-* Fully locally running the tests against a local browser
-* Locally running the tests against a containerized browser
-* Fully in 2 separate Docker containers, one containing the
-tests the other the browser
+* Locally containerized in 2 separate Docker containers:
+  one containing the tests, the other the browser
+* Locally natively running the tests against a local browser
+  or a containerized browser
 
-### Contents of this Framework
+## Contents of this Framework
 This framework contains support for...
-* Local thru fully containerized execution
-* Using Selenium Standalone containers eliminating the need for locally installed browsers or drivers
+* Using Selenium Standalone containers eliminating the need
+  for locally installed browsers or drivers
 * Multiple local browsers with automatic driver management
+* Single-command docker-compose framework to run
+  the tests or a supplied command
+* Local through fully-containerized execution
+* Containerized development environment
+* Continuous Integration with GitHub Actions vetting
+  linting, static security scanning, and functional
+  tests
 
 ## To Run the Automated Tests in Docker
-The tests in this project can be run be run fully in Docker
-assuming that Docker is installed and running.  This will build
-a docker image of this project and execute the tests against
-a Selenium Standalone container.
+The easiest way to run the tests is with the docker-compose
+framework using the `dockercomposerun` script.
+
+This will build a docker image of this project and run
+the tests against a
+[Selenium Standalone](https://github.com/SeleniumHQ/docker-selenium)
+container.
+
+You can view the running tests, using the included
+Virtual Network Computing (VNC) server.
 
 ### Prerequisites
-You must have docker installed and running on your local machine.
+You must have Docker installed and running on your local machine.
 
-### To Run Fully in Docker
-#### To Run Using the Default Chrome Standalone Container
+### To See the Tests Run Using the VNC Server
+> Browsers in the containers are not visible in the VNC server
+  when running `headless`.
+
+The Selenium Standalone containers used in the docker-compose
+framework have an included VNC server for viewing and
+debugging the tests.
+
+You can use either a VNC client or a web browser to view the tests.
+
+1. Ensure that you are running the Selenium Standalone containers
+   (e.g. in the docker-compose framework)
+2. To view the tests... using a web browser, navigate to
+   http://localhost:7900/; or to use a VNC server, use
+   `vnc://localhost:5900` (On Mac you can simply enter
+   this address into a web browser)
+3. When prompted for the (default) password, enter `secret`
+
+For more information, see the Selenium Standalone Image
+[VNC documentation](https://github.com/SeleniumHQ/docker-selenium#debugging)
+
+### To Run Using the Default Chrome Standalone Container
 1. Ensure Docker is running
-2. Run the project docker-compose.yml file with the
-   docker-compose.selenium.yml file (this runs using the Chrome
-   standalone container)
-```
-docker-compose -f docker-compose.yml -f docker-compose.selenium.yml up
-```
+2. From the project root directory, run the `dockercomposerun`
+   script with the defaults...
 
-#### To Run Using the Firefox Standalone Container
+   ```
+   ./script/dockercomposerun
+   ```
+
+### To Run Using the Firefox Standalone Container
 1. Ensure Docker is running
-2. Run the project docker-compose.yml file with the
-   docker-compose.selenium.yml file and specify the Firefox container
-   with environment variables
-```
-BROWSER=firefox SELENIUM_IMAGE=selenium/standalone-firefox docker-compose -f docker-compose.yml -f docker-compose.selenium.yml up
-```
+2. From the project root directory, run the `dockercomposerun`
+   script setting the `BROWSER` and `SELENIUM_IMAGE`
+   environment variables to specify Firefox...
+   ```
+   BROWSER=firefox SELENIUM_IMAGE=selenium/standalone-firefox ./script/dockercomposerun
+   ```
 
-## To Run the Automated Tests Locally
-The tests either can be run directly by the Cucumber runner or by the
-supplied Rakefile.
+### To Run the Test Container Interactively (i.e. "Shell In")
+1. Ensure Docker is running
+2. From the project root directory, run the `dockercomposerun`
+   script and supply the shell command `sh`...
+   ```
+   ./script/dockercomposerun sh
+   ```
+3. Run desired commands in the container
+   (e.g. `bundle exec rake`)
+4. Run the exit command to exit the Test container
+   ```
+   exit
+   ```
+## To Run the Automated Tests Natively
+Assuming that you have a Ruby development environment,
+the tests either can be run directly by the Cucumber
+runner or by the supplied Rakefile.
 
-### Examples ###
-#### Defaults ####
+### Prerequisites
+* Ruby 2.7.4
+* To run the tests using a specific browser requires that browser
+be installed
+(e.g. to run the tests in the Chrome Browser requires
+Chrome be installed).
+
+1. Install bundler (if not already installed for your Ruby):
+   ```
+   $ gem install bundler
+   ```
+2. Install gems (from project root):
+   ```
+   $ bundle install
+   ```
+
+### Examples of Running the Tests
+#### Defaults
 ```
 bundle exec rake
 ```
+
 ```
 bundle exec cucumber
 ```
-#### Browsers ####
+#### Browsers
 ```
 BROWSER=chrome bundle exec rake
 ```
@@ -73,22 +138,12 @@ BROWSER=chrome bundle exec rake
 BROWSER=firefox_headless bundle exec cucumber
 ```
 
-### To Run Using Rake
-To run the automated tests using Rake, execute...
-
-*command-line-arguments* `bundle exec rake`
-
-### To Run Using Cucumber
-To run the automated tests using Cucumber, execute...
-
-*command-line-arguments* `bundle exec cucumber`
-
-### Command Line Arguments
+### Environment Variables
 #### Specify Remote (Container) URL
 `REMOTE=`...
 
 Specifying a Remote URL creates a remote browser of type
-specified by `BROWSER` at the specified remote URL  
+specified by `BROWSER` at the specified remote URL
 
  **Example:**
 `REMOTE='http://localhost:4444/wd/hub'`
@@ -117,71 +172,24 @@ The following browsers were working on Mac at the time of this commit:
 * `firefox_headless` - Mozilla Firefox (requires Firefox)
 * `safari` - Apple Safari (requires Safari)
 
-### To Run Using the Selenium Standalone Debug Containers
-These tests can be run using the Selenium Standalone Debug containers for both
-Chrome and Firefox.  These *debug* containers run a VNC server that allow you to see
-the tests running in the browser in that container.  These Selenium Standalone Debug containers
-must be running on the default port of `4444`.
+#### Using the Selenium Standalone Containers
+Like the docker-compose framework, these tests can be run natively
+using the Selenium Standalone containers and the VNC Server
+if you want.
 
-For more information on these Selenium Standalone Debug containers see https://github.com/SeleniumHQ/docker-selenium.
+For specifics, see the Selenium Standalone Image
+[documentation](https://github.com/SeleniumHQ/docker-selenium).
 
-#### Prerequisites
-You must have docker installed and running on your local machine.
-
-To use the VNC server, you must have a VNC client on your local machine (e.g. Screen Sharing application on Mac).
-
-#### To Run Using Selenium Standalone Chrome Debug Container
-1. Ensure Docker is running on your local machine
-2. Run the Selenium Standalone Chrome Debug container on the default ports of 4444 and 5900 
-for the VNC server
-```
-docker run -d -p 4444:4444 -p 5900:5900 -v /dev/shm:/dev/shm selenium/standalone-chrome-debug:latest
-```
-3. Wait for the Selenium Standalone Chrome Debug container to be running (e.g. 'docker ps')
-4. Run the tests specifing the `REMOTE` and using the `chrome` or `chrome_headless` browser
-   specification
-```
-REMOTE='http://localhost:4444/wd/hub' BROWSER=chrome bundle exec cucumber
-```
-
-#### To Run Using Selenium Standalone Firefox Debug Container
-1. Ensure Docker is running on your local machine
-2. Run the Selenium Standalone Firefox Debug container on the default ports of 4444 and 5900 
-for the VNC server
-```
-docker run -d -p 4444:4444 -p 5900:5900 -v /dev/shm:/dev/shm selenium/standalone-firefox-debug:latest
-```
-3. Wait for the Selenium Standalone Firefox Debug container to be running (e.g. 'docker ps')
-4. Run the tests specifying the `REMOTE` and using the `firefox` or `firefox_headless` browser
-   specification
-```
-REMOTE='http://localhost:4444/wd/hub' BROWSER=firefox_headless bundle exec cucumber
-```
-
-#### To See the Tests Run Using the VNC Server
-1. Connect to [vnc://localhost:5900](vnc://localhost:5900) (On Mac you can simply enter this address into a Browser)
-2. When prompted for the (default) password, enter `secret`
-
-**NOTE:** Browsers in the containers are not visible in the VNC server when `headless`.
-
-### Requirements
-* Ruby 2.7.4
-* To run the tests using a specific browser requires that browser
-be installed
-(e.g. to run the tests in the Chrome Browser requires
-Chrome be installed).
-
-Install bundler (if not already installed for your Ruby):
-
-```
-$ gem install bundler
-```
-
-Install gems (from project root):
-
-```
-$ bundle
-```
+**Example of Using the Selenium Standalone (Chrome) Container...**
+1. Run the Selenium Standalone image with standard port and volume mapping...
+   ```
+   docker run -d -p 4444:4444 -p 5900:5900 -p 7900:7900 -v /dev/shm:/dev/shm selenium/standalone-chrome
+   ```
+2. If you want, launch the VNC client in app or browser
+3. Run the tests specifying the remote Selenium container...
+   ```
+   REMOTE='http://localhost:4444/wd/hub' BROWSER=chrome bundle exec cucumber
+   ```
 
 ## Development
 This project can be developed locally or using the supplied basic,
@@ -191,26 +199,33 @@ container-based development environment which include `vim` and `git`.
 To develop using the supplied container-based development environment...
 1. Build the development environment image specifying the `devenv` build
    stage as the target and supplying a name (tag) for the image.
-```
-docker build --no-cache --target devenv -t browsertests-dev .
-```
-2. Run the built development environment image either on its own or
-in the docker-compose environment with either the Selenium Chrome
-or Firefox container.  By default the development environment container
-executes the `/bin/ash` shell providing a command line interface. When
-running the development environment container, you must specify the path
-to this project's source code.
+   ```
+   docker build --no-cache --target devenv -t browsertests-dev .
+   ```
+2. Run the development environment image either on its own or
+   in the docker-compose environment with either the Selenium Chrome
+   or Firefox container.  By default the development environment
+   container executes the `/bin/ash` shell providing a command
+   line interface. When running the development environment
+   container, you must specify the path to this project's
+   source code.
 
-To run the development environment on its own, use `docker run`...
+#### Running Just the Test Development Image
+To run the development environment on its own, use
+`docker run`...
 ```
 docker run -it --rm -v $(pwd):/app browsertests-dev
 ```
 
+#### Running the Test Development Image in docker-compose
 To run the development environment in the docker-compose environment,
-use the `docker-compose.dev.yml` file...
+with a Selenium Standalone container use the `dockercomposerun`
+script and run it interactively with the default shell `/bin/ash`...
 ```
-IMAGE=browsertests-dev SRC=${PWD} docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.selenium.yml run browsertests /bin/ash
+BROWSERTESTS_IMAGE=browsertests-dev BROWSERTESTS_SRC=${PWD} ./script/dockercomposerun /bin/ash
 ```
 
-## Additional Information
-These tests use the [page-object gem](https://rubygems.org/gems/page-object)
+## Sources and Additional Information
+* The [Page-Object gem](https://rubygems.org/gems/page-object)
+* The [Webdrivers gem](https://github.com/titusfortner/webdrivers)
+* The [Selenium Docker Images](https://github.com/SeleniumHQ/docker-selenium)
