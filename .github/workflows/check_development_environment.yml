@@ -60,5 +60,20 @@ jobs:
       - name: Build app development environment
         run: "docker build --no-cache --target ${DEVENV} -t ${BROWSERTESTS_IMAGE} ."
 
-      - name: dockercomposerun (Run tests) with firefox
+      - name: dockercomposerun (Run tests) with Firefox
+        run: BROWSERTESTS_SRC=${PWD} ./script/dockercomposerun
+
+  runtests-specified-edge:
+    needs: build-devenv
+    runs-on: ubuntu-latest
+    env:
+      BROWSER: edge
+      SELENIUM_IMAGE: selenium/standalone-edge:latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build app development environment
+        run: "docker build --no-cache --target ${DEVENV} -t ${BROWSERTESTS_IMAGE} ."
+
+      - name: dockercomposerun (Run tests) with Edge
         run: BROWSERTESTS_SRC=${PWD} ./script/dockercomposerun

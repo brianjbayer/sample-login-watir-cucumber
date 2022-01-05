@@ -56,7 +56,7 @@ jobs:
       - name: dockercomposerun (Run tests) with defaults
         run: ./script/dockercomposerun
 
-  run-tests--specified-firefox:
+  run-tests-specified-firefox:
     needs: build-deploy
     runs-on: ubuntu-latest
     env:
@@ -66,4 +66,16 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: dockercomposerun (Run tests) with Firefox
+        run: ./script/dockercomposerun
+
+  run-tests-specified-edge:
+    needs: build-deploy
+    runs-on: ubuntu-latest
+    env:
+      BROWSER: edge
+      SELENIUM_IMAGE: selenium/standalone-edge:latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: dockercomposerun (Run tests) with Edge
         run: ./script/dockercomposerun

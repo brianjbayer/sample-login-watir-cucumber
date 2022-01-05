@@ -1,7 +1,8 @@
 # sample-login-watir-cucumber
 
 This is an example of Acceptance Test Driven Development (ATDD) using
-[Watir](http://watir.com), [Cucumber](https://cucumber.io), [Ruby](https://www.ruby-lang.org).
+[Watir](http://watir.com), [Cucumber](https://cucumber.io),
+[Ruby](https://www.ruby-lang.org).
 
 **However, it also provides a somewhat extensible framework that can be reused
 by replacing the existing tests.**
@@ -27,7 +28,7 @@ This framework contains support for...
 * Multiple local browsers with automatic driver management
 * Single-command docker-compose framework to run
   the tests or a supplied command
-* Local through fully-containerized execution
+* Native through fully-containerized execution
 * Containerized development environment
 * Continuous Integration with GitHub Actions vetting
   linting, static security scanning, and functional
@@ -87,6 +88,15 @@ For more information, see the Selenium Standalone Image
    BROWSER=firefox SELENIUM_IMAGE=selenium/standalone-firefox ./script/dockercomposerun
    ```
 
+### To Run Using the Edge Standalone Container
+1. Ensure Docker is running
+2. From the project root directory, run the `dockercomposerun`
+   script setting the `BROWSER` and `SELENIUM_IMAGE`
+   environment variables to specify Edge...
+   ```
+   BROWSER=edge SELENIUM_IMAGE=selenium/standalone-edge ./script/dockercomposerun
+   ```
+
 ### To Run the Test Container Interactively (i.e. "Shell In")
 1. Ensure Docker is running
 2. From the project root directory, run the `dockercomposerun`
@@ -121,24 +131,34 @@ Chrome be installed).
    $ bundle install
    ```
 
-### Examples of Running the Tests
-#### Defaults
-```
-bundle exec rake
-```
-
-```
-bundle exec cucumber
-```
-#### Browsers
-```
-BROWSER=chrome bundle exec rake
-```
-```
-BROWSER=firefox_headless bundle exec cucumber
-```
-
 ### Environment Variables
+#### Specify Browser
+`BROWSER=`...
+
+**Example:**
+`BROWSER=chrome`
+
+> * Mostly, this uses a pass thru and convert to symbol approach
+>   * **example:** "chrome" converts to `:chrome` which is a Watir browser
+> * Headless browsers are handled by detecting the word "headless"
+>   and sending that as an argument to the browser specified
+>   * **example:** "chrome_headless" converts to `:chrome`
+>     with `headless` argument
+
+The following browsers were working on Mac at the time of this commit:
+* `chrome` - Google Chrome (requires Chrome)
+* `chrome_headless` - Google Chrome run in headless mode (requires Chrome > 59)
+* `edge` - Microsoft Edge (requires Edge)
+* `edge_headless` - Microsoft Edge run in headless mode (requires Edge)
+* `firefox` - Mozilla Firefox (requires Firefox)
+* `firefox_headless` - Mozilla Firefox run in headless mode (requires Firefox)
+* `safari` - Apple Safari (requires Safari)
+
+> This project uses the
+> [Webdrivers](https://github.com/titusfortner/webdrivers)
+> gem to automatically download and maintain chromedriver, edgedriver, and
+> geckodriver (Firefox).
+
 #### Specify Remote (Container) URL
 `REMOTE=`...
 
@@ -148,29 +168,20 @@ specified by `BROWSER` at the specified remote URL
  **Example:**
 `REMOTE='http://localhost:4444/wd/hub'`
 
-#### Specify Browser
-`BROWSER=`...
+### Examples of Running the Tests
+#### Defaults
+```
+bundle exec rake
+```
 
-* Mostly, this uses a pass thru and convert to symbol approach
-  * **example:** "chrome" converts to `:chrome` which is a Watir browser
-* Headless browsers are handled by detecting the word "headless"
-and sending that as an argument to the browser specified
-  * **example:** "chrome_headless" converts to `:chrome`
-  with `headless` argument
+```
+bundle exec cucumber
+```
 
-#### Browser Drivers
-This project uses the
-[Webdrivers](https://github.com/titusfortner/webdrivers)
-gem to automatically download and maintain chromedriver and
-geckodriver (Firefox).
-
-#### Supported Browsers
-The following browsers were working on Mac at the time of this commit:
-* `chrome` - Google Chrome (requires Chrome)
-* `chrome_headless` - Google Chrome run in headless mode (requires Chrome > 59)
-* `firefox` - Mozilla Firefox (requires Firefox)
-* `firefox_headless` - Mozilla Firefox (requires Firefox)
-* `safari` - Apple Safari (requires Safari)
+#### Local Browsers
+```
+BROWSER=chrome_headless bundle exec rake
+```
 
 #### Using the Selenium Standalone Containers
 Like the docker-compose framework, these tests can be run natively
@@ -180,7 +191,6 @@ if you want.
 For specifics, see the Selenium Standalone Image
 [documentation](https://github.com/SeleniumHQ/docker-selenium).
 
-**Example of Using the Selenium Standalone (Chrome) Container...**
 1. Run the Selenium Standalone image with standard port and volume mapping...
    ```
    docker run -d -p 4444:4444 -p 5900:5900 -p 7900:7900 -v /dev/shm:/dev/shm selenium/standalone-chrome
