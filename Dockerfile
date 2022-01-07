@@ -1,6 +1,6 @@
 # sample-login-watir-cucumber
 ### Base Image ###
-FROM ruby:2.7.4-alpine AS ruby-alpine
+FROM ruby:2.7.5-alpine AS ruby-alpine
 
 ### Builder Stage ###
 FROM ruby-alpine AS builder
