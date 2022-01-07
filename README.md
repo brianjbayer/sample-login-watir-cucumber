@@ -26,6 +26,7 @@ This framework contains support for...
 * Using Selenium Standalone containers eliminating the need
   for locally installed browsers or drivers
 * Multiple local browsers with automatic driver management
+* Headless execution for those browsers that support it
 * Single-command docker-compose framework to run
   the tests or a supplied command
 * Native through fully-containerized execution
@@ -51,7 +52,7 @@ You must have Docker installed and running on your local machine.
 
 ### To See the Tests Run Using the VNC Server
 > Browsers in the containers are not visible in the VNC server
-  when running `headless`.
+> when running headless
 
 The Selenium Standalone containers used in the docker-compose
 framework have an included VNC server for viewing and
@@ -138,26 +139,37 @@ Chrome be installed).
 **Example:**
 `BROWSER=chrome`
 
-> * Mostly, this uses a pass thru and convert to symbol approach
->   * **example:** "chrome" converts to `:chrome` which is a Watir browser
-> * Headless browsers are handled by detecting the word "headless"
->   and sending that as an argument to the browser specified
->   * **example:** "chrome_headless" converts to `:chrome`
->     with `headless` argument
+> **If the `BROWSER` environment variable is not provided (i.e. set),
+> then the default Watir (Chrome) browser is used**
+
+Mostly, this uses a _pass-through_ approach and should support any
+valid Watir browser.
 
 The following browsers were working on Mac at the time of this commit:
 * `chrome` - Google Chrome (requires Chrome)
-* `chrome_headless` - Google Chrome run in headless mode (requires Chrome > 59)
 * `edge` - Microsoft Edge (requires Edge)
-* `edge_headless` - Microsoft Edge run in headless mode (requires Edge)
 * `firefox` - Mozilla Firefox (requires Firefox)
-* `firefox_headless` - Mozilla Firefox run in headless mode (requires Firefox)
-* `safari` - Apple Safari (requires Safari)
+* `safari` - Apple Safari (local only, requires Safari)
 
 > This project uses the
 > [Webdrivers](https://github.com/titusfortner/webdrivers)
 > gem to automatically download and maintain chromedriver, edgedriver, and
-> geckodriver (Firefox).
+> geckodriver (Firefox)
+
+#### Specify Headless
+`HEADLESS=`...
+
+> **The `HEADLESS` environment variable is ignored if the `BROWSER`
+> environment variable is not provided (i.e. set)**
+
+**Example:**
+`HEADLESS=true`
+
+> The headless specification is implemented as _truthy_ (like Ruby)
+> and ignores case.  Setting `HEADLESS` to any value
+> including empty (i.e. `HEADLESS= `) is interpreted as `true`
+> except for the value `false`.  Thus, setting `HEADLESS=FALSE`
+> will **not** run headless.
 
 #### Specify Remote (Container) URL
 `REMOTE=`...
@@ -180,7 +192,7 @@ bundle exec cucumber
 
 #### Local Browsers
 ```
-BROWSER=chrome_headless bundle exec rake
+BROWSER=chrome HEADLESS=true bundle exec rake
 ```
 
 #### Using the Selenium Standalone Containers
