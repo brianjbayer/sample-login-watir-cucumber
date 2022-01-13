@@ -3,4 +3,4 @@ services:
   browsertests:
     image: "${BROWSERTESTS_IMAGE}"
     volumes:
-      - ${BROWSERTESTS_SRC}:/app
+      - ${BROWSERTESTS_SRC:-.}:/app

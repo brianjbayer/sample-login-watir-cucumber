@@ -46,7 +46,7 @@ jobs:
         run: "docker build --no-cache --target ${DEVENV} -t ${BROWSERTESTS_IMAGE} ."
 
       - name: dockercomposerun (Run tests) with defaults
-        run: BROWSERTESTS_SRC=${PWD} ./script/dockercomposerun
+        run: ./script/dockercomposerun
 
   runtests-specified-firefox:
     needs: build-devenv
@@ -61,7 +61,7 @@ jobs:
         run: "docker build --no-cache --target ${DEVENV} -t ${BROWSERTESTS_IMAGE} ."
 
       - name: dockercomposerun (Run tests) with Firefox
-        run: BROWSERTESTS_SRC=${PWD} ./script/dockercomposerun
+        run: ./script/dockercomposerun
 
   runtests-specified-edge:
     needs: build-devenv
@@ -76,4 +76,4 @@ jobs:
         run: "docker build --no-cache --target ${DEVENV} -t ${BROWSERTESTS_IMAGE} ."
 
       - name: dockercomposerun (Run tests) with Edge
-        run: BROWSERTESTS_SRC=${PWD} ./script/dockercomposerun
+        run: ./script/dockercomposerun
