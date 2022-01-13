@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'webdrivers'
 require_relative 'watir_browser'
 
 Before do
