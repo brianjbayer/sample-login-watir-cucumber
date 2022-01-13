@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'webdrivers'
+
 def create_watir_browser
   browser = ENV['BROWSER'].to_sym if ENV['BROWSER']
   remote_url = ENV['REMOTE']
