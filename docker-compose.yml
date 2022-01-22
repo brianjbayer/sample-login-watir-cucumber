@@ -5,3 +5,6 @@ services:
     container_name: ${BROWSERTESTS_HOSTNAME:-browsertests}
     volumes:
       - .:/app
+    environment:
+      - LOGIN_USERNAME
+      - LOGIN_PASSWORD

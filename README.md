@@ -34,6 +34,8 @@ This framework contains support for...
 * Continuous Integration with GitHub Actions vetting
   linting, static security scanning, and functional
   tests
+* Basic secrets management using environment variables and
+  [GitHub Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
 
 ## To Run the Automated Tests in Docker
 The easiest way to run the tests is with the docker-compose
@@ -48,7 +50,13 @@ You can view the running tests, using the included
 Virtual Network Computing (VNC) server.
 
 ### Prerequisites
-You must have Docker installed and running on your local machine.
+1. You must have Docker installed and running on your local machine.
+2. You must specify the login credentials (i.e. secrets) used in the
+   test with the `LOGIN_USERNAME` and `LOGIN_PASSWORD` environment
+   variables...
+   ```
+   LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword!
+   ```
 
 ### To See the Tests Run Using the VNC Server
 > Browsers in the containers are not visible in the VNC server
@@ -77,7 +85,7 @@ For more information, see the Selenium Standalone Image
    script with the defaults...
 
    ```
-   ./script/dockercomposerun
+   LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun
    ```
 
 ### To Run Using the Firefox Standalone Container
@@ -86,7 +94,7 @@ For more information, see the Selenium Standalone Image
    script setting the `BROWSER` and `SELENIUM_IMAGE`
    environment variables to specify Firefox...
    ```
-   BROWSER=firefox SELENIUM_IMAGE=selenium/standalone-firefox ./script/dockercomposerun
+   BROWSER=firefox SELENIUM_IMAGE=selenium/standalone-firefox LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun
    ```
 
 ### To Run Using the Edge Standalone Container
@@ -95,7 +103,7 @@ For more information, see the Selenium Standalone Image
    script setting the `BROWSER` and `SELENIUM_IMAGE`
    environment variables to specify Edge...
    ```
-   BROWSER=edge SELENIUM_IMAGE=selenium/standalone-edge ./script/dockercomposerun
+   BROWSER=edge SELENIUM_IMAGE=selenium/standalone-edge LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun
    ```
 
 ### To Run the Test Container Interactively (i.e. "Shell In")
@@ -103,7 +111,7 @@ For more information, see the Selenium Standalone Image
 2. From the project root directory, run the `dockercomposerun`
    script and supply the shell command `sh`...
    ```
-   ./script/dockercomposerun sh
+   LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun sh
    ```
 3. Run desired commands in the container
    (e.g. `bundle exec rake`)
@@ -133,6 +141,16 @@ Chrome be installed).
    ```
 
 ### Environment Variables
+#### Required Secrets
+`LOGIN_USERNAME=tomsmith`
+
+`LOGIN_PASSWORD=SuperSecretPassword!`
+
+**These must be set for the login test to pass.**
+
+> These are publicly available values but demonstrate
+> basic secret management
+
 #### Specify Browser
 `BROWSER=`...
 
@@ -183,16 +201,16 @@ specified by `BROWSER` at the specified remote URL
 ### Examples of Running the Tests
 #### Defaults
 ```
-bundle exec rake
+LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! bundle exec rake
 ```
 
 ```
-bundle exec cucumber
+LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! bundle exec cucumber
 ```
 
 #### Local Browsers
 ```
-BROWSER=chrome HEADLESS=true bundle exec rake
+BROWSER=firefox HEADLESS=true LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! bundle exec rake
 ```
 
 #### Using the Selenium Standalone Containers
@@ -210,7 +228,7 @@ For specifics, see the Selenium Standalone Image
 2. If you want, launch the VNC client in app or browser
 3. Run the tests specifying the remote Selenium container...
    ```
-   REMOTE='http://localhost:4444/wd/hub' BROWSER=chrome bundle exec cucumber
+   REMOTE='http://localhost:4444/wd/hub' BROWSER=chrome LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! bundle exec cucumber
    ```
 
 ## Development
@@ -244,14 +262,14 @@ To run the development environment in the docker-compose environment,
 with a Selenium Standalone container use the `dockercomposerun`
 script and run it interactively with the default shell `/bin/ash`...
 ```
-BROWSERTESTS_IMAGE=browsertests-dev ./script/dockercomposerun /bin/ash
+BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun /bin/ash
 ```
 
 To use another directory as the source code for the development
 environment, set the `BROWSERTESTS_SRC` environment variable.
 For example...
 ```
-BROWSERTESTS_IMAGE=browsertests-dev BROWSERTESTS_SRC=${PWD} ./script/dockercomposerun /bin/ash
+BROWSERTESTS_SRC=${PWD} BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun /bin/ash
 ```
 
 ## Sources and Additional Information
