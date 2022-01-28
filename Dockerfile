@@ -50,7 +50,7 @@ USER deployer
 COPY --from=secscan --chown=deployer /usr/local/bundle/ /usr/local/bundle/
 # Copy in app source from the lint layer
 WORKDIR /app
-COPY --from=lint --chown=deployer . .
+COPY --from=lint --chown=deployer /app/ /app/
 
 # To Run the tests - altho this is orchestrated by the docker-compose.yml file
 #CMD bundle exec rake
