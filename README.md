@@ -58,6 +58,16 @@ Virtual Network Computing (VNC) server.
    LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword!
    ```
 
+#### Optional: Create a `.env` File
+You can create a file named `.env` in the project root directory
+that contains the required environment variables that will
+be used by default by Docker Compose instead of setting them on
+the command line...
+```
+LOGIN_USERNAME=tomsmith
+LOGIN_PASSWORD=SuperSecretPassword!
+```
+
 ### To See the Tests Run Using the VNC Server
 > Browsers in the containers are not visible in the VNC server
 > when running headless
