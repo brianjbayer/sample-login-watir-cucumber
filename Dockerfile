@@ -36,7 +36,7 @@ FROM builder AS secscan
 RUN apk add --no-cache git
 # Just need Rakefile and Gemfile.lock
 COPY Rakefile ./
-RUN bundle exec rake bundle:audit
+RUN bundle exec bundle-audit check --update
 
 ### Deploy Stage ###
 FROM ruby-alpine AS deploy
