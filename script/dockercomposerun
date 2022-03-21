@@ -6,11 +6,44 @@
 #
 # - Any environment variables set when calling this script are passed
 #   through to the docker-compose framework
-#   (e.g. configuration other than the defaults
-#
+#   (e.g. configuration other than the defaults)
+# OPTIONS:
+# -d: Use the docker-compose Dev environment with BROWSERTESTS_IMAGE
+# -n: No Selenium browser in the docker-compose environment
+# ----------------------------------------------------------------------
+
+usage() {
+  echo "Usage: $0 [-dn] [CMD]"
+}
+
+err_exit() {
+  local err_msg="$1"
+  local err_code=$2
+  echo "${err_msg}  --  Exit:[${err_code}]" 1>&2
+  usage
+  exit $err_code
+}
 
 # Exit script on any errors
 set -e
+
+# Handle options
+while getopts ":cdn" options; do
+  case "${options}" in
+    d)
+      echo "Development Environment"
+      devenv=true
+      ;;
+    n)
+      echo "No Selenium"
+      noselenium=true
+      ;;
+    \?)
+    err_exit "Invalid Option: -$OPTARG" 1
+      ;;
+  esac
+done
+shift $((OPTIND-1))
 
 echo ''
 echo "ENVIRONMENT VARIABLES..."
@@ -22,9 +55,17 @@ docker --version
 docker-compose --version
 echo ''
 
+# Override docker compose environments
 echo 'DOCKER-COMPOSE COMMAND...'
-docker_compose_command='docker-compose -f docker-compose.yml -f docker-compose.selenium.yml '
-if [ ! -z ${BROWSERTESTS_IMAGE} ]; then
+docker_compose_command='docker-compose -f docker-compose.yml '
+
+# Unless the no selenium option is set, use Selenium browser
+if [ -z ${noselenium} ]; then
+  echo "...Adding Selenium Browser to Environment"
+  docker_compose_command="${docker_compose_command} -f docker-compose.selenium.yml "
+fi
+
+if [ ! -z ${devenv} ]; then
   echo "...Using Development Environment with Image [${BROWSERTESTS_IMAGE}]"
   docker_compose_command="${docker_compose_command} -f docker-compose.dev.yml "
 fi
