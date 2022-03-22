@@ -7,13 +7,15 @@
 # - Any environment variables set when calling this script are passed
 #   through to the docker-compose framework
 #   (e.g. configuration other than the defaults)
+#
 # OPTIONS:
+# -c: Use the docker-compose CI environment with BROWSERTESTS_IMAGE
 # -d: Use the docker-compose Dev environment with BROWSERTESTS_IMAGE
 # -n: No Selenium browser in the docker-compose environment
 # ----------------------------------------------------------------------
 
 usage() {
-  echo "Usage: $0 [-dn] [CMD]"
+  echo "Usage: $0 [-cdn] [CMD]"
 }
 
 err_exit() {
@@ -30,6 +32,10 @@ set -e
 # Handle options
 while getopts ":cdn" options; do
   case "${options}" in
+    c)
+      echo "CI Environment"
+      ci=true
+      ;;
     d)
       echo "Development Environment"
       devenv=true
@@ -63,6 +69,11 @@ docker_compose_command='docker-compose -f docker-compose.yml '
 if [ -z ${noselenium} ]; then
   echo "...Adding Selenium Browser to Environment"
   docker_compose_command="${docker_compose_command} -f docker-compose.selenium.yml "
+fi
+
+if [ ! -z ${ci} ]; then
+  echo "...Using CI Environment with Image [${BROWSERTESTS_IMAGE}]"
+  docker_compose_command="${docker_compose_command} -f docker-compose.ci.yml "
 fi
 
 if [ ! -z ${devenv} ]; then
