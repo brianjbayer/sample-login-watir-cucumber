@@ -6,7 +6,6 @@ services:
       - HEADLESS
       - REMOTE=http://${SELENIUM_HOSTNAME:-seleniumbrowser}:4444/wd/hub
       - REMOTE_STATUS=http://${SELENIUM_HOSTNAME:-seleniumbrowser}:4444/wd/hub/status
-    command: ./script/runtests
     depends_on:
       - seleniumbrowser
 

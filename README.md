@@ -246,6 +246,12 @@ This project can be developed locally or using the supplied basic,
 container-based development environment which include `vim` and `git`.
 
 ### To Develop Using the Container-based Development Environment
+You must volume mount your local source code into the development
+environment container, by default the current working directory.
+
+By default the development environment container executes the `/bin/ash`
+shell providing a command line interface.
+
 To develop using the supplied container-based development environment...
 1. Build the development environment image specifying the `devenv` build
    stage as the target and supplying a name (tag) for the image.
@@ -253,34 +259,30 @@ To develop using the supplied container-based development environment...
    docker build --no-cache --target devenv -t browsertests-dev .
    ```
 2. Run the development environment image in the docker-compose environment
-   either alone or with the Selenium Chrome (or Selenium browser
-   containers)  By default the development environment
-   container executes the `/bin/ash` shell providing a command
-   line interface. When running the development environment
-   container, you must specify the path to this project's
-   source code.
+   either alone or with Selenium Chrome (or other Selenium browser
+   containers)
 
 #### Running Just the Test Development Image
 To run the development environment in the docker-compose environment alone
 without a Selenium Standalone container use `-n` to specify no browser and
 `-d` to specify the development environment with `dockercomposerun`...
 ```
-BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -n -d sh
+BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -n -d
 ```
 
 #### Running the Test Development Image with the Selenium Browser
 To run the development environment in the docker-compose environment
-with a Selenium Standalone container use the `dockercomposerun`
-script and run it interactively with the default shell `/bin/ash`...
+with a Selenium Standalone container use `-d` to specify the development
+environment with `dockercomposerun`...
 ```
-BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -d sh
+BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -d
 ```
 
 To use another directory as the source code for the development
 environment, set the `BROWSERTESTS_SRC` environment variable.
 For example...
 ```
-BROWSERTESTS_SRC=${PWD} BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -d sh
+BROWSERTESTS_SRC=${PWD} BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -d
 ```
 
 ## Sources and Additional Information
