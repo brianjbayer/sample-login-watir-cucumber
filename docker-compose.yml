@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   browsertests:
-    build: .
+    image: brianjbayer/sample-login-watir-cucumber:${BROWSERTESTS_TAG:-latest}
     container_name: ${BROWSERTESTS_HOSTNAME:-browsertests}
     environment:
       - LOGIN_USERNAME
