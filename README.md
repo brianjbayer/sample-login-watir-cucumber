@@ -252,34 +252,35 @@ To develop using the supplied container-based development environment...
    ```
    docker build --no-cache --target devenv -t browsertests-dev .
    ```
-2. Run the development environment image either on its own or
-   in the docker-compose environment with either the Selenium Chrome
-   or Firefox container.  By default the development environment
+2. Run the development environment image in the docker-compose environment
+   either alone or with the Selenium Chrome (or Selenium browser
+   containers)  By default the development environment
    container executes the `/bin/ash` shell providing a command
    line interface. When running the development environment
    container, you must specify the path to this project's
    source code.
 
 #### Running Just the Test Development Image
-To run the development environment on its own, use
-`docker run`...
+To run the development environment in the docker-compose environment alone
+without a Selenium Standalone container use `-n` to specify no browser and
+`-d` to specify the development environment with `dockercomposerun`...
 ```
-docker run -it --rm -v $(pwd):/app browsertests-dev
+BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -n -d sh
 ```
 
-#### Running the Test Development Image in docker-compose
-To run the development environment in the docker-compose environment,
+#### Running the Test Development Image with the Selenium Browser
+To run the development environment in the docker-compose environment
 with a Selenium Standalone container use the `dockercomposerun`
 script and run it interactively with the default shell `/bin/ash`...
 ```
-BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun /bin/ash
+BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -d sh
 ```
 
 To use another directory as the source code for the development
 environment, set the `BROWSERTESTS_SRC` environment variable.
 For example...
 ```
-BROWSERTESTS_SRC=${PWD} BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun /bin/ash
+BROWSERTESTS_SRC=${PWD} BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -d sh
 ```
 
 ## Sources and Additional Information

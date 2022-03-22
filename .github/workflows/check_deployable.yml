@@ -15,25 +15,37 @@ jobs:
 
   code-standards-rubocop:
     runs-on: ubuntu-latest
+    env:
+      DEVENV: devenv
+      BROWSERTESTS_IMAGE: app-devenv
 
     steps:
       - uses: actions/checkout@v1
       - name: Docker version
         run: docker --version
 
-      - name: Build linted app code deploy
-        run: docker build --no-cache --target lint -t app-lint .
+      - name: Build app development environment
+        run: "docker build --no-cache --target ${DEVENV} -t ${BROWSERTESTS_IMAGE} ."
+
+      - name: Run the linting in the dev image
+        run: ./script/dockercomposerun -d -n ./script/runlint
 
   security-scan-bundler-audit:
     runs-on: ubuntu-latest
+    env:
+      DEVENV: devenv
+      BROWSERTESTS_IMAGE: app-devenv
 
     steps:
       - uses: actions/checkout@v1
       - name: Docker version
         run: docker --version
 
-      - name: Build security-scanned app code for deploy
-        run: docker build --no-cache --target secscan -t app-secscan .
+      - name: Build app development environment
+        run: "docker build --no-cache --target ${DEVENV} -t ${BROWSERTESTS_IMAGE} ."
+
+      - name: Run the linting in the dev image
+        run: ./script/dockercomposerun -d -n ./script/runsecscan
 
   build-deploy:
     needs: [code-standards-rubocop, security-scan-bundler-audit]
