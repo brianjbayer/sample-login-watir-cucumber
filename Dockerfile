@@ -38,5 +38,5 @@ COPY --from=builder --chown=deployer /usr/local/bundle/ /usr/local/bundle/
 WORKDIR /app
 COPY --chown=deployer . /app/
 
-# To Run the tests - altho this is orchestrated by the docker-compose.yml file
-#CMD bundle exec rake
+# Run the tests
+CMD ./script/runtests
