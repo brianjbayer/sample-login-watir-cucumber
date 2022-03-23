@@ -41,7 +41,7 @@ This framework contains support for...
 The easiest way to run the tests is with the docker-compose
 framework using the `dockercomposerun` script.
 
-This will build a docker image of this project and run
+This will pull the latest docker image of this project and run
 the tests against a
 [Selenium Standalone](https://github.com/SeleniumHQ/docker-selenium)
 container.
@@ -242,48 +242,81 @@ For specifics, see the Selenium Standalone Image
    ```
 
 ## Development
-This project can be developed locally or using the supplied basic,
-container-based development environment which include `vim` and `git`.
+This project can be developed using the supplied basic, container-based
+development environment which includes `vim` and `git`.
 
-### To Develop Using the Container-based Development Environment
-You must volume mount your local source code into the development
-environment container, by default the current working directory.
+The development environment container volume mounts your local source
+code to recognize and persist any changes.
 
-By default the development environment container executes the `/bin/ash`
-shell providing a command line interface.
+By default the development environment container executes the alpine
+`/bin/ash` shell providing a command line interface.
 
-To develop using the supplied container-based development environment...
-1. Build the development environment image specifying the `devenv` build
+### To Develop Using the Container-Based Development Environment
+The easiest way to run the containerized development environment is with
+the docker-compose framework using the `dockercomposerun` script with the
+`-d` (development environment) option...
+```
+LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -d
+```
+
+This will pull and run the latest development environment image of this
+project along with the Chrome [Selenium Standalone](https://github.com/SeleniumHQ/docker-selenium)
+container.
+
+#### Running Just the Development Environment
+To run the development environment on its own in the docker-compose
+environment **without a Selenium browser**, use the `-n` option for
+no Selenium and the `-d` option for the development environment...
+```
+LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -n -d
+```
+
+#### Building Your Own Development Environment Image
+You can also build and run your own development environment image.
+
+1. Build your development environment image specifying the `devenv` build
    stage as the target and supplying a name (tag) for the image.
    ```
    docker build --no-cache --target devenv -t browsertests-dev .
    ```
-2. Run the development environment image in the docker-compose environment
-   either alone or with Selenium Chrome (or other Selenium browser
-   containers)
 
-#### Running Just the Test Development Image
-To run the development environment in the docker-compose environment alone
-without a Selenium Standalone container use `-n` to specify no browser and
-`-d` to specify the development environment with `dockercomposerun`...
-```
-BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -n -d
-```
+2. Run your development environment image in the docker-compose
+   environment either on its own or with the Selenium Chrome
+   (or other browser containers) and specify your development
+   environment image with `BROWSERTESTS_IMAGE`
+   ```
+   BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -n -d
+   ```
 
-#### Running the Test Development Image with the Selenium Browser
-To run the development environment in the docker-compose environment
-with a Selenium Standalone container use `-d` to specify the development
-environment with `dockercomposerun`...
-```
-BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -d
-```
-
+#### Specifying the Source Code Location
 To use another directory as the source code for the development
 environment, set the `BROWSERTESTS_SRC` environment variable.
 For example...
 ```
 BROWSERTESTS_SRC=${PWD} BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -d
 ```
+
+#### Running the Tests, Linting, and Security Scanning
+To run the tests, linting, and security scanning in the development
+environment like CI, use the appropriate wrapper scripts.
+
+If you are running interactively (command line) in the development
+environment...
+
+* To run the **tests**...
+  ```
+  ./script/runtests
+  ```
+
+* To run the **linting**...
+  ```
+  ./script/runlint
+  ```
+
+* To run the dependency **security scan**...
+  ```
+  ./script/runsecscan
+  ```
 
 ## Sources and Additional Information
 * The [Page-Object gem](https://rubygems.org/gems/page-object)
