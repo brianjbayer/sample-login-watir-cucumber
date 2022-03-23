@@ -1,6 +1,6 @@
 version: '3.4'
 services:
   browsertests:
-    image: "${BROWSERTESTS_IMAGE}"
+    image: "${BROWSERTESTS_IMAGE:-brianjbayer/sample-login-watir-cucumber-dev:latest}"
     volumes:
       - ${BROWSERTESTS_SRC:-.}:/app
