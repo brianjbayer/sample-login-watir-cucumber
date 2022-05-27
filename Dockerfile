@@ -1,6 +1,6 @@
 # sample-login-watir-cucumber
 ### Base Image ###
-FROM ruby:2.7.5-alpine AS ruby-alpine
+FROM ruby:2.7.6-alpine AS ruby-alpine
 
 ### Builder Stage ###
 FROM ruby-alpine AS builder
@@ -8,7 +8,7 @@ FROM ruby-alpine AS builder
 RUN apk --update add --virtual build-dependencies build-base libffi-dev
 
 # Use the same version of Bundler in the Gemfile.lock
-RUN gem install bundler:2.3.4
+RUN gem install bundler:2.3.14
 WORKDIR /app
 # Install the Ruby dependencies (defined in the Gemfile/Gemfile.lock)
 COPY Gemfile Gemfile.lock ./
