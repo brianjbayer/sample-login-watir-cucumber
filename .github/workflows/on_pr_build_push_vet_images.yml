@@ -62,39 +62,17 @@ jobs:
       - name: dockercomposerun bundle-audit on development environment
         run: "BROWSERTESTS_IMAGE=${DEVENV_IMAGE} ./script/dockercomposerun -n -d ./script/runsecscan"
 
-  vet-e2e-tests-deploy-image-default-chrome:
+  vet-deploy-e2e-tests-matrix:
     needs: [pr-norm-branch, build-and-push-branch-unvetted]
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, firefox, edge]
     runs-on: ubuntu-latest
     env:
       UNVETTED_IMAGE: ${{ github.repository }}_${{ needs.pr-norm-branch.outputs.name }}_unvetted:${{ github.event.pull_request.head.sha }}
-      LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME }}
-      LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
-    steps:
-      - uses: actions/checkout@v1
-      - name: dockercomposerun unvetted image
-        run: "BROWSERTESTS_IMAGE=${UNVETTED_IMAGE} ./script/dockercomposerun -c"
-
-  vet-e2e-tests-deploy-image-firefox:
-    needs: [pr-norm-branch, build-and-push-branch-unvetted]
-    runs-on: ubuntu-latest
-    env:
-      UNVETTED_IMAGE: ${{ github.repository }}_${{ needs.pr-norm-branch.outputs.name }}_unvetted:${{ github.event.pull_request.head.sha }}
-      BROWSER: firefox
-      SELENIUM_IMAGE: selenium/standalone-firefox:latest
-      LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME }}
-      LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
-    steps:
-      - uses: actions/checkout@v1
-      - name: dockercomposerun unvetted image
-        run: "BROWSERTESTS_IMAGE=${UNVETTED_IMAGE} ./script/dockercomposerun -c"
-
-  vet-e2e-tests-deploy-image-edge:
-    needs: [pr-norm-branch, build-and-push-branch-unvetted]
-    runs-on: ubuntu-latest
-    env:
-      UNVETTED_IMAGE: ${{ github.repository }}_${{ needs.pr-norm-branch.outputs.name }}_unvetted:${{ github.event.pull_request.head.sha }}
-      BROWSER: edge
-      SELENIUM_IMAGE: selenium/standalone-edge:latest
+      BROWSER: ${{ matrix.browser }}
+      SELENIUM_IMAGE: selenium/standalone-${{ matrix.browser }}:latest
       LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME }}
       LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
     steps:
@@ -107,9 +85,7 @@ jobs:
     needs:
       - vet-code-standards
       - vet-dependency-security
-      - vet-e2e-tests-deploy-image-default-chrome
-      - vet-e2e-tests-deploy-image-firefox
-      - vet-e2e-tests-deploy-image-edge
+      - vet-deploy-e2e-tests-matrix
       - pr-norm-branch
     uses: brianjbayer/actions-image-cicd/.github/workflows/pull_push_image.yml@main
     with:
@@ -122,39 +98,17 @@ jobs:
       registry_p: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
   # Vet Dev Environment Image
-  vet-e2e-tests-devenv-image-default-chrome:
+  vet-devenv-e2e-tests-matrix:
     needs: [pr-norm-branch, build-and-push-branch-devenv]
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, firefox, edge]
     runs-on: ubuntu-latest
     env:
       DEVENV_IMAGE: ${{ github.repository }}_${{ needs.pr-norm-branch.outputs.name }}_dev:${{ github.event.pull_request.head.sha }}
-      LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME }}
-      LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
-    steps:
-      - uses: actions/checkout@v1
-      - name: dockercomposerun devenv image
-        run: "BROWSERTESTS_IMAGE=${DEVENV_IMAGE} ./script/dockercomposerun -d ./script/runtests"
-
-  vet-e2e-tests-devenv-image-firefox:
-    needs: [pr-norm-branch, build-and-push-branch-devenv]
-    runs-on: ubuntu-latest
-    env:
-      DEVENV_IMAGE: ${{ github.repository }}_${{ needs.pr-norm-branch.outputs.name }}_dev:${{ github.event.pull_request.head.sha }}
-      BROWSER: firefox
-      SELENIUM_IMAGE: selenium/standalone-firefox:latest
-      LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME }}
-      LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
-    steps:
-      - uses: actions/checkout@v1
-      - name: dockercomposerun devenv image
-        run: "BROWSERTESTS_IMAGE=${DEVENV_IMAGE} ./script/dockercomposerun -d ./script/runtests"
-
-  vet-e2e-tests-devenv-image-edge:
-    needs: [pr-norm-branch, build-and-push-branch-devenv]
-    runs-on: ubuntu-latest
-    env:
-      DEVENV_IMAGE: ${{ github.repository }}_${{ needs.pr-norm-branch.outputs.name }}_dev:${{ github.event.pull_request.head.sha }}
-      BROWSER: edge
-      SELENIUM_IMAGE: selenium/standalone-edge:latest
+      BROWSER: ${{ matrix.browser }}
+      SELENIUM_IMAGE: selenium/standalone-${{ matrix.browser }}:latest
       LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME }}
       LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
     steps:
