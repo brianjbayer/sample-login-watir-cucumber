@@ -15,7 +15,7 @@ def create_watir_browser
 end
 
 def create_remote_browser(remote_url, browser, headless)
-  Watir::Browser.new browser, url: remote_url, headless: headless
+  Watir::Browser.new browser, url: remote_url, headless:
 end
 
 def create_local_browser(browser, headless)
@@ -24,7 +24,7 @@ def create_local_browser(browser, headless)
 
   # Not all watir browsers (Safari) support the headless option
   if headless
-    Watir::Browser.new browser, headless: headless
+    Watir::Browser.new(browser, headless:)
   else
     Watir::Browser.new browser
   end
