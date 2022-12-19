@@ -1,4 +1,8 @@
+require:
+  - rubocop-rake
+  - rubocop-rspec
+
 AllCops:
-  NewCops: disable
+  NewCops: enable
 Layout/LineLength:
     Max: 120

@@ -8,6 +8,14 @@ class LoginPage < BasePage
   text_field(:password,  name: 'password')
   button(:login_button, text: 'Login')
 
+  def login_with_valid_credentials
+    valid_username = ENV.fetch('LOGIN_USERNAME')
+    valid_password = ENV.fetch('LOGIN_PASSWORD')
+    login_with_credentials(valid_username, valid_password)
+  end
+
+  private
+
   def login_with_credentials(username, password)
     self.username = username
     self.password = password

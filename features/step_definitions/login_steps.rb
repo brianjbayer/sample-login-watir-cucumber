@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-When(/^user logs in with username and password$/) do
-  on(LoginPage).login_with_credentials(ENV['LOGIN_USERNAME'], ENV['LOGIN_PASSWORD'])
+When(/^user logs in with valid credentials/) do
+  on(LoginPage).login_with_valid_credentials
 end
 
 Then(/^user must be sent to the Secure Area$/) do
