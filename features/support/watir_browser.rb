@@ -3,9 +3,9 @@
 require 'webdrivers'
 
 def create_watir_browser
-  browser = ENV['BROWSER'].to_sym if ENV['BROWSER']
-  remote_url = ENV['REMOTE']
-  headless = headless? ENV['HEADLESS']
+  browser = specified_browser
+  remote_url = specified_remote_url
+  headless = headless_specified?
 
   if remote_url
     create_remote_browser(remote_url, browser, headless)
@@ -30,8 +30,16 @@ def create_local_browser(browser, headless)
   end
 end
 
-def headless?(indicator)
-  return false if indicator.nil?
+def specified_browser
+  ENV['BROWSER']&.to_sym
+end
 
-  indicator.to_s.downcase != 'false'
+def specified_remote_url
+  ENV.fetch('REMOTE', nil)
+end
+
+# Returns true if HEADLESS env var is set or not 'false'
+def headless_specified?
+  headless = ENV.fetch('HEADLESS', false)
+  headless.to_s.downcase != 'false'
 end
