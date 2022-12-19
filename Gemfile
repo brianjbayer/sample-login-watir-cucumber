@@ -9,5 +9,7 @@ gem 'page-object'
 gem 'rake'
 gem 'rspec'
 gem 'rubocop', require: false
+gem 'rubocop-rake', require: false
+gem 'rubocop-rspec', require: false
 gem 'selenium-webdriver'
 gem 'webdrivers', '~> 4.0'
