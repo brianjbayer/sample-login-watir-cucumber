@@ -3,7 +3,7 @@
 #-----------------------------------
 
 ### Base Image ###
-ARG BASE_IMAGE=ruby:2.7.7-alpine
+ARG BASE_IMAGE=ruby:3.1.3-alpine
 FROM ${BASE_IMAGE} AS ruby-alpine
 
 ### Builder Stage ###
