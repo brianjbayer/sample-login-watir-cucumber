@@ -55,4 +55,4 @@ WORKDIR /app
 COPY --chown=deployer . /app/
 
 # Run the tests but allow override
-CMD ./script/runtests
+CMD ./script/run tests
