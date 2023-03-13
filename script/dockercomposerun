@@ -101,7 +101,7 @@ echo ''
 echo "DOCKER-COMPOSE RUNNING [$@]..."
 # Allow to fail but catch return code
 set +e
-$docker_compose_command run browsertests "$@"
+$docker_compose_command run --rm browsertests "$@"
 run_return_code=$?
 # NOTE return code must be caught before any other command
 set -e

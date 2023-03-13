@@ -1,0 +1,93 @@
+#!/bin/sh
+# -----------------------------------------------
+# Project run script to run
+#   - lint
+#   - secscan
+#   - tests
+#   - or it runs all arguments
+# -----------------------------------------------
+
+# --- Functions ---
+run_and_exit_return_code () {
+  # Exit script on any errors
+  set -e
+
+  # Set to all positional parameters each expanding
+  # to a separate word
+  command_to_run="$@"
+  if [ -z "$command_to_run" ]; then
+    echo "ERROR: Function requires a command argument (86)"
+    exit 86
+  fi
+
+  # Run the command and preserve exit code
+  echo "RUNNING [${command_to_run} ]..."
+  # Allow to fail but catch return code
+  set +e
+  $command_to_run
+  run_return_code=$?
+  # NOTE return code must be caught before any other command
+  set -e
+  echo ''
+
+  echo "EXITING WITH RUN RETURN CODE [${run_return_code}]"
+  exit $run_return_code
+}
+
+wait_until_ready_if_remote_browser() {
+# Assumes wget (Alpine)
+  if [ ! -z "${REMOTE_STATUS}" ];
+  then
+    COUNTER=0
+    echo "Waiting for remote browser at [${REMOTE_STATUS}] to become available"
+    until wget --spider -q "${REMOTE_STATUS}" &>/dev/null; do
+      printf "."
+      sleep 1
+      COUNTER=$((COUNTER + 1))
+      if [ $COUNTER -eq 30 ] ; then
+        echo "✘"
+        echo "ERROR: Timed out waiting for remote browser (99)"
+        exit 99
+      fi
+    done
+    echo "✔"
+  fi
+}
+
+# ------------
+# --- MAIN ---
+# ------------
+# Exit script on any errors
+set -e
+
+# set run command if recognized action
+action="${1}"
+case "$action" in
+  "lint")
+    shift
+    run_command="bundle exec rubocop $@"
+  ;;
+
+  "secscan")
+    shift
+    run_command="bundle exec bundle-audit check --update $@"
+  ;;
+
+  "tests")
+    shift
+    wait_until_ready_if_remote_browser
+    run_command="bundle exec cucumber $@"
+  ;;
+esac
+
+if [ -z "$run_command" ]; then
+  # No recognized actions so run all the arguments as the command"
+  run_command="$@"
+else
+  echo "RUNNING Action [${action}]"
+fi
+
+# Run the command and exit passing any arguments
+run_and_exit_return_code "$run_command"
+echo "ERROR: should have exited!!! (99)"
+exit 99

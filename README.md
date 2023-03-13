@@ -298,24 +298,24 @@ BROWSERTESTS_SRC=${PWD} BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsm
 
 #### Running the Tests, Linting, and Security Scanning
 To run the tests, linting, and security scanning in the development
-environment like CI, use the appropriate wrapper scripts.
+environment like CI, use the `run` script.
 
 If you are running interactively (command line) in the development
 environment...
 
 * To run the **tests**...
   ```
-  ./script/runtests
+  ./script/run tests
   ```
 
 * To run the **linting**...
   ```
-  ./script/runlint
+  ./script/run lint
   ```
 
 * To run the dependency **security scan**...
   ```
-  ./script/runsecscan
+  ./script/run secscan
   ```
 
 ## Sources and Additional Information
