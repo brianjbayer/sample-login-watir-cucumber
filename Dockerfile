@@ -3,7 +3,7 @@
 #-----------------------------------
 
 #--- Base Image ---
-ARG BASE_IMAGE=ruby:3.2.1-alpine
+ARG BASE_IMAGE=ruby:3.2.2-alpine
 FROM ${BASE_IMAGE} AS ruby-alpine
 
 #--- Builder Stage ---
@@ -13,7 +13,7 @@ FROM ruby-alpine AS builder
 ARG BUILD_PACKAGES='build-dependencies build-base libffi-dev'
 
 # Use the same version of Bundler in the Gemfile.lock
-ARG BUNDLER_VER=2.4.8
+ARG BUNDLER_VER=2.4.10
 
 RUN apk --update add --virtual ${BUILD_PACKAGES} \
   # Update gem command to latest

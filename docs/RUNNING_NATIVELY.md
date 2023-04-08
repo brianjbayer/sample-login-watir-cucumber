@@ -4,7 +4,7 @@ the tests either can be run directly by the Cucumber
 runner or by the supplied Rakefile.
 
 ### Prerequisites
-* Ruby 3.2.1
+* Ruby 3.2.2
 * To run the tests using a specific browser requires that browser
 be installed
 (e.g. to run the tests in the Chrome Browser requires
