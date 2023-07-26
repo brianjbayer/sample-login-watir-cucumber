@@ -48,9 +48,10 @@ The following browsers were working on Mac at the time of this commit:
 * `safari` - Apple Safari (local only, requires Safari)
 
 > This project uses the
-> [Webdrivers](https://github.com/titusfortner/webdrivers)
-> gem to automatically download and maintain chromedriver, edgedriver, and
-> geckodriver (Firefox)
+> [Selenium Manager](https://www.selenium.dev/blog/2022/introducing-selenium-manager/)
+> facility built into the `selenium-webdriver` gem to automatically
+> download and maintain chromedriver, edgedriver,
+> and geckodriver (Firefox).
 
 #### Specify Headless
 `HEADLESS=`...

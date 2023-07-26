@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'webdrivers'
-
 def create_watir_browser
   browser = specified_browser
   remote_url = specified_remote_url

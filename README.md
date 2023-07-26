@@ -138,7 +138,6 @@ For more information, see [DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
 ## Sources and Additional Information
 * The [Page-Object gem](https://rubygems.org/gems/page-object)
-* The [Webdrivers gem](https://github.com/titusfortner/webdrivers)
 * The [Selenium Docker Images](https://github.com/SeleniumHQ/docker-selenium)
 * The [Rubocop style enforcer and linter](https://rubocop.org/)
 * The [bundler-audit dependency static security scanner](https://github.com/rubysec/bundler-audit)
