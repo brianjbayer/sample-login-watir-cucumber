@@ -13,7 +13,7 @@ FROM ruby-alpine AS builder
 ARG BUILD_PACKAGES='build-dependencies build-base libffi-dev'
 
 # Use the same version of Bundler in the Gemfile.lock
-ARG BUNDLER_VERSION=2.4.15
+ARG BUNDLER_VERSION=2.4.21
 ENV BUNDLER_VERSION=${BUNDLER_VERSION}
 
 RUN apk --update add --virtual ${BUILD_PACKAGES} \
