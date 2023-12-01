@@ -38,6 +38,11 @@ This framework contains support for...
 * Basic secrets management using environment variables and
   [GitHub Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
 
+## Prerequisites
+
+Before being able to run this project, you must follow the requirements
+in the [PREREQUISITES.md](docs/PREREQUISITES.md)
+
 ## Running
 The easiest way to run the tests is with the docker compose
 framework using the `dockercomposerun` script.
@@ -50,34 +55,7 @@ container.
 You can view the running tests using the included
 Virtual Network Computing (VNC) server.
 
-### Prerequisites
-1. You must have Docker installed and running on your local machine.
-2. You must specify the login credentials (i.e. secrets) used in the
-   test with the `LOGIN_USERNAME` and `LOGIN_PASSWORD` environment
-   variables...
-   ```
-   LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword!
-   ```
 
-### Running Using the Default Chrome Standalone Container
-By default, the `dockercomposerun` script runs using the latest
-Selenium Standalone Chrome container.
-1. Ensure Docker is running
-2. From the project root directory, run the `dockercomposerun`
-   script with the defaults...
-   ```
-   LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun
-   ```
-
-### Optional: Creating a `.env` File
-You can create a file named `.env` in the project root directory
-that contains the required environment variables that will
-be used by default by Docker Compose instead of setting them on
-the command line...
-```
-LOGIN_USERNAME=tomsmith
-LOGIN_PASSWORD=SuperSecretPassword!
-```
 
 ### Seeing the Tests Run
 > Browsers in the containers are not visible in the VNC server
@@ -100,6 +78,16 @@ You can use either a VNC client or a web browser to view the tests.
 For more information, see the Selenium Standalone Image
 [VNC documentation](https://github.com/SeleniumHQ/docker-selenium#debugging)
 
+### Running Using the Default Chrome Standalone Container
+By default, the `dockercomposerun` script runs using the latest
+Selenium Standalone Chrome container.
+1. Ensure Docker is running
+2. From the project root directory, run the `dockercomposerun`
+   script with the defaults...
+   ```
+   ./script/dockercomposerun
+   ```
+
 ### Running Using Other Selenium Standalone Containers
 You can also run the tests using other Selenium Standalone
 containers (such as Firefox and Edge) with the docker compose
@@ -114,7 +102,7 @@ You can run the tests interactively by "shelling in" to the test container.
 2. From the project root directory, run the `dockercomposerun`
    script and supply the shell command `sh`...
    ```
-   LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun sh
+   ./script/dockercomposerun sh
    ```
 3. Run desired commands in the container
    (e.g. `bundle exec rake`)

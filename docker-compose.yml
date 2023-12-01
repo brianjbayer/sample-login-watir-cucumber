@@ -4,5 +4,6 @@ services:
     image: brianjbayer/sample-login-watir-cucumber:${BROWSERTESTS_TAG:-latest}
     container_name: ${BROWSERTESTS_HOSTNAME:-browsertests}
     environment:
+      - BASE_URL
       - LOGIN_USERNAME
       - LOGIN_PASSWORD

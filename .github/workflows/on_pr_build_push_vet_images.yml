@@ -73,6 +73,7 @@ jobs:
       UNVETTED_IMAGE: ${{ github.repository }}_${{ needs.pr-norm-branch.outputs.name }}_unvetted:${{ github.event.pull_request.head.sha }}
       BROWSER: ${{ matrix.browser }}
       SELENIUM_IMAGE: selenium/standalone-${{ matrix.browser }}:latest
+      BASE_URL: "https://the-internet.herokuapp.com"
       LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME }}
       LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
     steps:
@@ -109,6 +110,7 @@ jobs:
       DEVENV_IMAGE: ${{ github.repository }}_${{ needs.pr-norm-branch.outputs.name }}_dev:${{ github.event.pull_request.head.sha }}
       BROWSER: ${{ matrix.browser }}
       SELENIUM_IMAGE: selenium/standalone-${{ matrix.browser }}:latest
+      BASE_URL: "https://the-internet.herokuapp.com"
       LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME }}
       LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
     steps:
