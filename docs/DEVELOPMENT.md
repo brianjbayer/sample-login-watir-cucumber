@@ -8,12 +8,16 @@ code to recognize and persist any changes.
 By default the development environment container executes the alpine
 `/bin/ash` shell providing a command line interface.
 
+### Prerequisites
+Before being able to run this project, you must follow the requirements
+in the [PREREQUISITES.md](PREREQUISITES.md)
+
 ### To Develop Using the Container-Based Development Environment
 The easiest way to run the containerized development environment is with
 the docker-compose framework using the `dockercomposerun` script with the
 `-d` (development environment) option...
 ```
-LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -d
+./script/dockercomposerun -d
 ```
 
 This will pull and run the latest development environment image of this
@@ -25,7 +29,7 @@ To run the development environment on its own in the docker-compose
 environment **without a Selenium browser**, use the `-n` option for
 no Selenium and the `-d` option for the development environment...
 ```
-LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -n -d
+./script/dockercomposerun -n -d
 ```
 
 #### Building Your Own Development Environment Image
@@ -42,7 +46,7 @@ You can also build and run your own development environment image.
    (or other browser containers) and specify your development
    environment image with `BROWSERTESTS_IMAGE`
    ```
-   BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -n -d
+   BROWSERTESTS_IMAGE=browsertests-dev ./script/dockercomposerun -n -d
    ```
 
 #### Specifying the Source Code Location
@@ -50,7 +54,7 @@ To use another directory as the source code for the development
 environment, set the `BROWSERTESTS_SRC` environment variable.
 For example...
 ```
-BROWSERTESTS_SRC=${PWD} BROWSERTESTS_IMAGE=browsertests-dev LOGIN_USERNAME=tomsmith LOGIN_PASSWORD=SuperSecretPassword! ./script/dockercomposerun -d
+BROWSERTESTS_SRC=${PWD} BROWSERTESTS_IMAGE=browsertests-dev ./script/dockercomposerun -d
 ```
 
 #### Running the Tests, Linting, and Security Scanning
