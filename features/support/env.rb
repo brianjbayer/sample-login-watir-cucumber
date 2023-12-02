@@ -10,6 +10,7 @@ require_relative 'config'
 # and it throws an exception with World(Config::Pages)
 # rubocop:disable Style/MixinUsage
 include Config::Pages
+include Config::Watir
 # rubocop:enable Style/MixinUsage
 
 World(PageObject::PageFactory)
