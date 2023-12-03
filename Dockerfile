@@ -3,7 +3,7 @@
 #-----------------------------------
 
 #--- Base Image ---
-ARG BASE_IMAGE=ruby:3.2.2-slim-bullseye
+ARG BASE_IMAGE=ruby:3.2.2-slim-bookworm
 FROM ${BASE_IMAGE} AS ruby-base
 
 # Install packages common to builder (dev) and deploy
