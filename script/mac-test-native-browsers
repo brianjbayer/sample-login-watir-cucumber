@@ -1,0 +1,103 @@
+#!/bin/bash
+# ----------------------------------------------------------------------
+# This script is intended for macOS and runs the project tests using
+# all browsers supported on Mac.  This script is for testing during
+# development on this project.
+# ----------------------------------------------------------------------
+
+prompt-to-proceed () {
+  read -p "Do you wish to proceed (Press any key to continue or 'n' to exit)? " response
+  if [[ $response == 'n' ]] || [[ $response == 'N' ]]; then
+    echo " buh-bye"
+    echo ""
+    exit
+  fi
+  echo ""
+}
+
+run_command () {
+  command_to_run="$@"
+  echo "  Executing [${command_to_run}]..."
+  $command_to_run
+  echo "  ... [${command_to_run}] completed"
+  echo ""
+}
+
+set_browser_env () {
+  export BROWSER="$@"
+  echo "BROWSER=${BROWSER-unset}"
+}
+
+set_headless_env () {
+  export HEADLESS="$@"
+  echo "HEADLESS=${HEADLESS-unset}"
+}
+
+load_if_dotenv_file () {
+  if [[ -f .env ]]; then
+    echo "Found .env file, loading it"
+    export $(cat .env | xargs)
+    echo ""
+  fi
+}
+
+### MAIN ###
+# Exit script on any errors
+set -e
+
+echo "Testing the NATIVE sample project - macOS only"
+echo ""
+
+load_if_dotenv_file
+
+echo "Running bundle install - DO NOT COMMIT Gemfile.lock"
+prompt-to-proceed
+run_command bundle install
+echo ""
+
+echo "Testing default"
+run_command bundle exec rake
+
+echo "Testing Chrome"
+set_browser_env chrome
+run_command bundle exec rake
+
+echo "Testing Chrome Headless"
+set_browser_env chrome
+set_headless_env
+run_command bundle exec rake
+set_headless_env false
+
+echo "Testing Edge"
+set_browser_env edge
+run_command bundle exec rake
+
+echo "Testing Edge Headless"
+set_browser_env edge
+set_headless_env foo
+run_command bundle exec rake
+set_headless_env false
+
+echo "Testing Firefox"
+set_browser_env firefox
+run_command bundle exec rake
+
+echo "Testing Firefox Headless"
+set_browser_env firefox
+set_headless_env true
+run_command bundle exec rake
+set_headless_env false
+
+echo "Testing Safari"
+set_browser_env safari
+run_command bundle exec rake
+
+echo "--- ALL TESTS PASSED ---"
+echo ""
+
+echo "Doing git checkout of Gemfile.lock"
+prompt-to-proceed
+run_command git checkout Gemfile.lock
+echo ""
+
+echo "--- FIN ---"
