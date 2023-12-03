@@ -5,8 +5,8 @@ Driven Development (ATDD) using
 [Watir](http://watir.com), [Cucumber](https://cucumber.io),
 [Ruby](https://www.ruby-lang.org).
 
-**However, it also provides a somewhat extensible framework that can be reused
-by replacing the existing tests.**
+**However, it also provides a somewhat extensible framework that
+can be reused by replacing the existing tests.**
 
 These tests show how to use Watir-Cucumber to verify...
 * The ability to login as a user
@@ -39,11 +39,15 @@ This framework contains support for...
   [GitHub Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
 
 ## Prerequisites
-
 Before being able to run this project, you must follow the requirements
 in the [PREREQUISITES.md](docs/PREREQUISITES.md)
 
 ## Running
+
+> :apple: The images built for this project are multi-platform
+> images that support both `linux/amd64` (e.g. x86) and
+> `linux/arm64` (i.e. Apple Silicon)
+
 The easiest way to run the tests is with the docker compose
 framework using the `dockercomposerun` script.
 
@@ -54,8 +58,6 @@ container.
 
 You can view the running tests using the included
 Virtual Network Computing (VNC) server.
-
-
 
 ### Seeing the Tests Run
 > Browsers in the containers are not visible in the VNC server
@@ -79,14 +81,19 @@ For more information, see the Selenium Standalone Image
 [VNC documentation](https://github.com/SeleniumHQ/docker-selenium#debugging)
 
 ### Running Using the Default Chrome Standalone Container
-By default, the `dockercomposerun` script runs using the latest
-Selenium Standalone Chrome container.
+By default, the `dockercomposerun` script runs using the
+latest Selenium Standalone Chrome container.
+
 1. Ensure Docker is running
 2. From the project root directory, run the `dockercomposerun`
    script with the defaults...
    ```
    ./script/dockercomposerun
    ```
+
+> :apple: Apple Silicon Macs will actually run against the
+> [Seleniarm Standalone](https://github.com/seleniumhq-community/docker-seleniarm)
+> container
 
 ### Running Using Other Selenium Standalone Containers
 You can also run the tests using other Selenium Standalone
@@ -97,7 +104,9 @@ For more information, see
 [RUNNING_WITH_OTHER_CONTAINERS.md](docs/RUNNING_WITH_OTHER_CONTAINERS.md).
 
 ### Running Interactively (i.e. "Shell In")
-You can run the tests interactively by "shelling in" to the test container.
+You can run the tests interactively by "shelling in" to the
+test container.
+
 1. Ensure Docker is running
 2. From the project root directory, run the `dockercomposerun`
    script and supply the shell command `sh`...
@@ -116,7 +125,7 @@ Assuming that you have a Ruby development environment,
 the tests either can be run directly by the Cucumber
 runner or by the supplied Rakefile.
 
-For more information, see [RUNNING_NATIVELY.md.](docs/RUNNING_NATIVELY.md)
+For more information, see [RUNNING_NATIVELY.md](docs/RUNNING_NATIVELY.md).
 
 ## Development
 This project can be developed using the supplied container-based
@@ -125,7 +134,12 @@ development environment which includes `vim` and `git`.
 For more information, see [DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
 ## Sources and Additional Information
-* The [Page-Object gem](https://rubygems.org/gems/page-object)
-* The [Selenium Docker Images](https://github.com/SeleniumHQ/docker-selenium)
-* The [Rubocop style enforcer and linter](https://rubocop.org/)
-* The [bundler-audit dependency static security scanner](https://github.com/rubysec/bundler-audit)
+These tests use the...
+* page-object gem: [page-object on GitHub](https://github.com/cheezy/page-object)
+* Selenium Standalone Containers: [Selenium HQ on GitHub](https://github.com/SeleniumHQ/docker-selenium),
+  [Selenium on Docker Hub](https://hub.docker.com/u/selenium)
+* Seleniarm Standalone Containers [Seleniarm HQ on GitHub](https://github.com/seleniumhq-community/docker-seleniarm),
+  [Seleniarm on Docker Hub](https://hub.docker.com/u/seleniarm)
+* Rubocop style enforcer and linter: [Rubocop docs](https://rubocop.org/),
+  [Rubocop on GitHub](https://github.com/rubocop/rubocop)
+* bundler-audit dependency static security scanner: [bundler-audit on GitHub](https://github.com/rubysec/bundler-audit)
