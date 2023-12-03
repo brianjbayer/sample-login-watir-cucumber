@@ -5,8 +5,8 @@ development environment which includes `vim` and `git`.
 The development environment container volume mounts your local source
 code to recognize and persist any changes.
 
-By default the development environment container executes the alpine
-`/bin/ash` shell providing a command line interface.
+By default the development environment container executes the
+`/bin/bash` shell providing a command line interface.
 
 ### Prerequisites
 Before being able to run this project, you must follow the requirements
