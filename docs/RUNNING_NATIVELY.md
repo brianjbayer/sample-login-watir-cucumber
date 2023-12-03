@@ -36,7 +36,7 @@ see the [PREREQUISITES.md](PREREQUISITES.md)
 Mostly, this uses a _pass-through_ approach and should support any
 valid Watir browser.
 
-The following browsers were working on Mac at the time of this commit:
+The following browsers were working on Mac at the time of this commit...
 * `chrome` - Google Chrome (requires Chrome)
 * `edge` - Microsoft Edge (requires Edge)
 * `firefox` - Mozilla Firefox (requires Firefox)
