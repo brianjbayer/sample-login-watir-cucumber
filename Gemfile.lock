@@ -7,12 +7,12 @@ GEM
       bundler (>= 1.2.0, < 3)
       thor (~> 1.0)
     concurrent-ruby (1.2.2)
-    cucumber (9.0.2)
+    cucumber (9.1.0)
       builder (~> 3.2, >= 3.2.4)
       cucumber-ci-environment (~> 9.2, >= 9.2.0)
-      cucumber-core (~> 11.1, >= 11.1.0)
-      cucumber-cucumber-expressions (~> 16.1, >= 16.1.2)
-      cucumber-gherkin (>= 24, < 26.2.1)
+      cucumber-core (~> 12.0)
+      cucumber-cucumber-expressions (~> 17.0)
+      cucumber-gherkin (>= 24, < 27)
       cucumber-html-formatter (~> 20.4, >= 20.4.0)
       cucumber-messages (>= 19, < 23)
       diff-lcs (~> 1.5, >= 1.5.0)
@@ -20,28 +20,28 @@ GEM
       multi_test (~> 1.1, >= 1.1.0)
       sys-uname (~> 1.2, >= 1.2.3)
     cucumber-ci-environment (9.2.0)
-    cucumber-core (11.1.0)
-      cucumber-gherkin (>= 24, < 27)
-      cucumber-messages (>= 19, < 22)
-      cucumber-tag-expressions (~> 4.1, >= 4.1.0)
-    cucumber-cucumber-expressions (16.1.2)
+    cucumber-core (12.0.0)
+      cucumber-gherkin (>= 25, < 27)
+      cucumber-messages (>= 20, < 23)
+      cucumber-tag-expressions (~> 5.0, >= 5.0.4)
+    cucumber-cucumber-expressions (17.0.1)
     cucumber-gherkin (26.2.0)
       cucumber-messages (>= 19.1.4, < 22.1)
     cucumber-html-formatter (20.4.0)
       cucumber-messages (>= 18.0, < 22.1)
-    cucumber-messages (21.0.1)
-    cucumber-tag-expressions (4.1.0)
+    cucumber-messages (22.0.0)
+    cucumber-tag-expressions (5.0.6)
     data_magic (1.2)
       faker (>= 1.1.2)
       yml_reader (>= 0.6)
     diff-lcs (1.5.0)
     eventually_helper (0.0.2)
-    faker (3.2.1)
+    faker (3.2.2)
       i18n (>= 1.8.11, < 2)
     ffi (1.16.3)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
-    json (2.6.3)
+    json (2.7.0)
     language_server-protocol (3.17.0.3)
     mini_mime (1.1.5)
     multi_test (1.1.0)
@@ -54,7 +54,7 @@ GEM
     parser (3.2.2.4)
       ast (~> 2.4.1)
       racc
-    racc (1.7.1)
+    racc (1.7.3)
     rainbow (3.1.1)
     rake (13.1.0)
     regexp_parser (2.8.2)
@@ -72,7 +72,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.12.0)
     rspec-support (3.12.1)
-    rubocop (1.57.2)
+    rubocop (1.58.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
@@ -80,7 +80,7 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml (>= 3.2.5, < 4.0)
-      rubocop-ast (>= 1.28.1, < 2.0)
+      rubocop-ast (>= 1.30.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.30.0)
@@ -97,7 +97,7 @@ GEM
       rubocop-factory_bot (~> 2.22)
     ruby-progressbar (1.13.0)
     rubyzip (2.3.2)
-    selenium-webdriver (4.14.0)
+    selenium-webdriver (4.15.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -113,7 +113,6 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  arm64-darwin-23
   ruby
   x86_64-linux
 
@@ -130,4 +129,4 @@ DEPENDENCIES
   selenium-webdriver
 
 BUNDLED WITH
-   2.4.21
+   2.4.22
