@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 gem 'bundler-audit', require: false
 gem 'cucumber'
+gem 'debug', '>= 1.0.0'
 gem 'eventually_helper'
 gem 'page-object'
 gem 'rake'

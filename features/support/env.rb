@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'debug'
 require 'rspec'
 require 'page-object'
 require 'eventually_helper'
