@@ -1,5 +1,10 @@
 # sample-login-watir-cucumber
 
+## Overview
+
+> :unamused: Currently Microsoft Edge Browser is not supported
+> in this project per brianjbayer/sample-login-watir-cucumber#83
+
 This is an example of End-To-End (E2E) Tests/Acceptance Test
 Driven Development (ATDD) using
 [Watir](http://watir.com), [Cucumber](https://cucumber.io),
