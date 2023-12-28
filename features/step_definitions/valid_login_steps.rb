@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-When(/^user logs in with valid credentials/) do
+When('user logs in with valid credentials') do
   on(LoginPage).login_with_valid_credentials
 end
 
-Then(/^user must be sent to the Secure Area$/) do
+Then('user must be sent to the Secure Area') do
   on(SecureAreaPage) do |page|
     # An "eventually" matcher
     Timeout.timeout(5) do
