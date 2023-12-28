@@ -69,7 +69,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [chrome, firefox, edge]
+        # MS Edge is currently not supported per brianjbayer/sample-login-watir-cucumber#83
+        # browser: [chrome, firefox, edge]
+        browser: [chrome, firefox]
     runs-on: ubuntu-latest
     env:
       UNVETTED_IMAGE: ${{ github.repository }}_${{ needs.pr-norm-branch.outputs.name }}_unvetted:${{ github.event.pull_request.head.sha }}
@@ -104,7 +106,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [chrome, firefox, edge]
+        # MS Edge is currently not supported per brianjbayer/sample-login-watir-cucumber#83
+        # browser: [chrome, firefox, edge]
+        browser: [chrome, firefox]
     runs-on: ubuntu-latest
     env:
       DEVENV_IMAGE: ${{ github.repository }}_${{ needs.pr-norm-branch.outputs.name }}_dev:${{ github.event.pull_request.head.sha }}
