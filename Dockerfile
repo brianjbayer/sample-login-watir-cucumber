@@ -22,7 +22,7 @@ FROM ruby-base AS builder
 ARG BASE_BUILD_PACKAGES='build-essential'
 
 # Use the same version of Bundler in the Gemfile.lock
-ARG BUNDLER_VERSION=2.4.22
+ARG BUNDLER_VERSION=2.5.3
 ENV BUNDLER_VERSION=${BUNDLER_VERSION}
 
 # Assumes debian based
