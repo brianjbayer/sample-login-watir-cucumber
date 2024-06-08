@@ -1,123 +1,100 @@
-name: On PR Build Push Vet
+name: Build and Vet
 
 on:
   pull_request:
     branches:
       - main
 
-# FYI...
-#  Raw Branch Name: ${{ github.head_ref }}
-#  <commit-sha>: ${{ github.event.pull_request.head.sha }}
-
-# Produced multi-architecture (linux/amd64,linux/arm64) images...
-#  1. (Always) Unvetted Image: <owner/repository>_<normalized-branch>_unvetted:<commit-sha>
-#  2. (Always) Dev Environment Image: <owner/repository>_<normalized-branch>_dev:<commit-sha>
-#  3. (If vetted) Vetted_image: <owner/repository>_<normalized-branch>:<commit-sha>
-
 jobs:
-  # Normalize the branch for image name
-  pr-norm-branch:
-    uses: brianjbayer/actions-image-cicd/.github/workflows/normalize_for_image_name.yml@main
-    with:
-      raw_name: ${{ github.head_ref }}
 
-  # Build and Push Images
-  buildx-and-push-branch-devenv:
-    needs: [pr-norm-branch]
-    uses: brianjbayer/actions-image-cicd/.github/workflows/buildx_push_image.yml@main
+  # --- Image Names ---
+
+  image-names:
+    name: PR (Branch) Image Names
+    uses: brianjbayer/actions-image-cicd/.github/workflows/image_names.yml@v0.2.0
     with:
-      image: ${{ github.repository }}_${{ needs.pr-norm-branch.outputs.name }}_dev:${{ github.event.pull_request.head.sha }}
+      add_branch_name: true
+
+  # --- Build and Push Images ---
+
+  buildx-and-push-dev-image:
+    name: Build Development Image
+    needs:
+      - image-names
+    uses: brianjbayer/actions-image-cicd/.github/workflows/buildx_push_image.yml@v0.2.0
+    with:
+      image: ${{ needs.image-names.outputs.dev_image }}
       platforms: "linux/amd64,linux/arm64"
       buildopts: --target devenv
     secrets:
       registry_u: ${{ secrets.DOCKER_HUB_USERNAME }}
       registry_p: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-  buildx-and-push-branch-unvetted:
-    needs: [pr-norm-branch]
-    uses: brianjbayer/actions-image-cicd/.github/workflows/buildx_push_image.yml@main
+  buildx-and-push-unvetted-image:
+    name: Build Deployment (Unvetted) Image
+    needs:
+      - image-names
+    uses: brianjbayer/actions-image-cicd/.github/workflows/buildx_push_image.yml@v0.2.0
     with:
-      image: ${{ github.repository }}_${{ needs.pr-norm-branch.outputs.name }}_unvetted:${{ github.event.pull_request.head.sha }}
+      image: ${{ needs.image-names.outputs.unvetted_image }}
       platforms: "linux/amd64,linux/arm64"
     secrets:
       registry_u: ${{ secrets.DOCKER_HUB_USERNAME }}
       registry_p: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-  # Vet Deploy Image
-  vet-code-standards:
-    needs: [pr-norm-branch, buildx-and-push-branch-devenv]
-    runs-on: ubuntu-latest
-    env:
-      DEVENV_IMAGE: ${{ github.repository }}_${{ needs.pr-norm-branch.outputs.name }}_dev:${{ github.event.pull_request.head.sha }}
-    steps:
-      - uses: actions/checkout@v1
-      - name: dockercomposerun rubocop on development environment
-        run: "BROWSERTESTS_IMAGE=${DEVENV_IMAGE} ./script/dockercomposerun -do ./script/run lint"
 
-  vet-dependency-security:
-    needs: [pr-norm-branch, buildx-and-push-branch-devenv]
-    runs-on: ubuntu-latest
-    env:
-      DEVENV_IMAGE: ${{ github.repository }}_${{ needs.pr-norm-branch.outputs.name }}_dev:${{ github.event.pull_request.head.sha }}
-    steps:
-      - uses: actions/checkout@v1
-      - name: dockercomposerun bundle-audit on development environment
-        run: "BROWSERTESTS_IMAGE=${DEVENV_IMAGE} ./script/dockercomposerun -do ./script/run secscan"
+  # --- Vet Images ---
 
-  vet-deploy-e2e-tests-matrix:
-    needs: [pr-norm-branch, buildx-and-push-branch-unvetted]
-    strategy:
-      fail-fast: false
-      matrix:
-        # MS Edge is currently not supported per brianjbayer/sample-login-watir-cucumber#83
-        # browser: [chrome, firefox, edge]
-        browser: [chrome, firefox]
-    runs-on: ubuntu-latest
-    env:
-      UNVETTED_IMAGE: ${{ github.repository }}_${{ needs.pr-norm-branch.outputs.name }}_unvetted:${{ github.event.pull_request.head.sha }}
-      BROWSER: ${{ matrix.browser }}
-      SELENIUM_IMAGE: selenium/standalone-${{ matrix.browser }}:latest
-      BASE_URL: "https://the-internet.herokuapp.com"
-      LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME }}
-      LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
-    steps:
-      - uses: actions/checkout@v1
-      - name: dockercomposerun unvetted image
-        run: "BROWSERTESTS_IMAGE=${UNVETTED_IMAGE} ./script/dockercomposerun -c"
-
-# Copy (IF) Vetted Deploy Image
-  copy-branch-vetted-deploy-image:
+  vet-lint-and-dependency-security:
+    name: Vet Code Quality
     needs:
-      - vet-code-standards
-      - vet-dependency-security
-      - vet-deploy-e2e-tests-matrix
-      - pr-norm-branch
-    uses: brianjbayer/actions-image-cicd/.github/workflows/copy_image.yml@main
+      - image-names
+      - buildx-and-push-dev-image
+    uses: brianjbayer/actions-image-cicd/.github/workflows/vet_code_standards.yml@v0.2.0
     with:
-      source_image: ${{ github.repository }}_${{ needs.pr-norm-branch.outputs.name }}_unvetted:${{ github.event.pull_request.head.sha }}
-      target_image: ${{ github.repository }}_${{ needs.pr-norm-branch.outputs.name }}:${{ github.event.pull_request.head.sha }}
+      lint_command: "BROWSERTESTS_IMAGE=${{ needs.image-names.outputs.dev_image }} ./script/dockercomposerun -do ./script/run lint"
+      dependency_security_command: "BROWSERTESTS_IMAGE=${{ needs.image-names.outputs.dev_image }} ./script/dockercomposerun -do ./script/run secscan"
+
+  # - End-to-End Tests -
+  vet-e2e-tests-deployment:
+    name: Vet End-to-End Tests (Deployment Image)
+    needs:
+      - image-names
+      - buildx-and-push-unvetted-image
+    uses: ./.github/workflows/run-e2e-tests.yml
+    with:
+      e2e_tests_image: ${{ needs.image-names.outputs.unvetted_image }}
+      e2e_tests_command: "./script/dockercomposerun -c"
+    secrets:
+      login_username: ${{ secrets.LOGIN_USERNAME }}
+      login_password: ${{ secrets.LOGIN_PASSWORD }}
+
+  # End-to-End Tests (Dev Image)
+  run-e2e-tests-development:
+    name: Run End-to-End Tests (Development Image)
+    needs:
+      - image-names
+      - buildx-and-push-dev-image
+    uses: ./.github/workflows/run-e2e-tests.yml
+    with:
+      e2e_tests_image: ${{ needs.image-names.outputs.dev_image }}
+      e2e_tests_command: "./script/dockercomposerun -d ./script/run tests"
+    secrets:
+      login_username: ${{ secrets.LOGIN_USERNAME }}
+      login_password: ${{ secrets.LOGIN_PASSWORD }}
+
+  # --- Promote Vetted Image If It Passes ---
+
+  copy-branch-vetted-deploy-image:
+    name: Promote Vetted Deployment Image
+    needs:
+      - image-names
+      - vet-lint-and-dependency-security
+      - vet-e2e-tests-deployment
+    uses: brianjbayer/actions-image-cicd/.github/workflows/copy_image.yml@v0.2.0
+    with:
+      source_image: ${{ needs.image-names.outputs.unvetted_image }}
+      target_image: ${{ needs.image-names.outputs.vetted_image }}
     secrets:
       registry_u: ${{ secrets.DOCKER_HUB_USERNAME }}
       registry_p: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-
-  # Vet Dev Environment Image
-  vet-devenv-e2e-tests-matrix:
-    needs: [pr-norm-branch, buildx-and-push-branch-devenv]
-    strategy:
-      fail-fast: false
-      matrix:
-        # MS Edge is currently not supported per brianjbayer/sample-login-watir-cucumber#83
-        # browser: [chrome, firefox, edge]
-        browser: [chrome, firefox]
-    runs-on: ubuntu-latest
-    env:
-      DEVENV_IMAGE: ${{ github.repository }}_${{ needs.pr-norm-branch.outputs.name }}_dev:${{ github.event.pull_request.head.sha }}
-      BROWSER: ${{ matrix.browser }}
-      SELENIUM_IMAGE: selenium/standalone-${{ matrix.browser }}:latest
-      BASE_URL: "https://the-internet.herokuapp.com"
-      LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME }}
-      LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
-    steps:
-      - uses: actions/checkout@v1
-      - name: dockercomposerun devenv image
-        run: "BROWSERTESTS_IMAGE=${DEVENV_IMAGE} ./script/dockercomposerun -d ./script/run tests"
