@@ -4,7 +4,7 @@
 
 #--- Base Image ---
 ARG BASE_IMAGE=ruby:3.2.4-slim-bookworm
-FROM --platform=$BUILDPLATFORM ${BASE_IMAGE} AS ruby-base
+FROM ${BASE_IMAGE} AS ruby-base
 
 # Install packages common to builder (dev) and deploy
 ARG BASE_PACKAGES='curl'
