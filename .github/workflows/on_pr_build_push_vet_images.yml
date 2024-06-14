@@ -52,7 +52,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: dockercomposerun rubocop on development environment
-        run: "BROWSERTESTS_IMAGE=${DEVENV_IMAGE} ./script/dockercomposerun -n -d ./script/run lint"
+        run: "BROWSERTESTS_IMAGE=${DEVENV_IMAGE} ./script/dockercomposerun -do ./script/run lint"
 
   vet-dependency-security:
     needs: [pr-norm-branch, buildx-and-push-branch-devenv]
@@ -62,7 +62,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: dockercomposerun bundle-audit on development environment
-        run: "BROWSERTESTS_IMAGE=${DEVENV_IMAGE} ./script/dockercomposerun -n -d ./script/run secscan"
+        run: "BROWSERTESTS_IMAGE=${DEVENV_IMAGE} ./script/dockercomposerun -do ./script/run secscan"
 
   vet-deploy-e2e-tests-matrix:
     needs: [pr-norm-branch, buildx-and-push-branch-unvetted]
