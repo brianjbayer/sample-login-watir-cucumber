@@ -3,6 +3,7 @@
 #-----------------------------------
 
 #--- Base Image ---
+# Ruby version must match that in Gemfile.lock
 ARG BASE_IMAGE=ruby:3.2.4-slim-bookworm
 FROM ${BASE_IMAGE} AS ruby-base
 
@@ -18,12 +19,12 @@ RUN apt-get update \
 #--- Builder Stage ---
 FROM ruby-base AS builder
 
-# Need to add lib-ffi to build ffi gem native extensions
-ARG BASE_BUILD_PACKAGES='build-essential'
-
 # Use the same version of Bundler in the Gemfile.lock
 ARG BUNDLER_VERSION=2.5.10
 ENV BUNDLER_VERSION=${BUNDLER_VERSION}
+
+# Install base build packages
+ARG BASE_BUILD_PACKAGES='build-essential'
 
 # Assumes debian based
 RUN apt-get update \
@@ -51,6 +52,7 @@ FROM builder AS devenv
 
 # For Dev Env, add git and vim at least
 ARG DEVENV_PACKAGES='git vim'
+
 ARG BUNDLER_PATH=/usr/local/bundle
 
 # Install dev environment specific build packages
@@ -61,13 +63,12 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* \
   # Install app dependencies
   && bundle install \
-    # Remove unneeded files (cached *.gem, *.o, *.c)
-    && rm -rf ${BUNDLER_PATH}/cache/*.gem \
-    && find ${BUNDLER_PATH}/gems/ -name "*.c" -delete \
-    && find ${BUNDLER_PATH}/gems/ -name "*.o" -delete
+  # Remove unneeded files (cached *.gem, *.o, *.c)
+  && rm -rf ${BUNDLER_PATH}/cache/*.gem \
+  && find ${BUNDLER_PATH}/gems/ -name '*.[co]' -delete
 
 # Start devenv in (command line) shell
-CMD bash
+CMD ["bash"]
 
 #--- Deploy Stage ---
 FROM ruby-base AS deploy
@@ -88,4 +89,4 @@ WORKDIR /app
 COPY --chown=deployer . /app/
 
 # Run the tests but allow override
-CMD ./script/run tests
+CMD ["./script/run", "tests"]
