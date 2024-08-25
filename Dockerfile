@@ -8,7 +8,6 @@ ARG BASE_IMAGE=ruby:3.3.4-slim-bookworm
 FROM ${BASE_IMAGE} AS ruby-base
 
 # Install packages common to builder (dev) and deploy
-ARG BASE_PACKAGES='curl'
 
 # Assumes debian based
 RUN apt-get update \
@@ -89,4 +88,5 @@ WORKDIR /app
 COPY --chown=deployer . /app/
 
 # Run the tests but allow override
-CMD ["./script/run", "tests"]
+# Expects the wait_on_endpoint script environment variables to be set
+CMD ["bash", "-c", "./wait_on_endpoint && bundle exec cucumber"]

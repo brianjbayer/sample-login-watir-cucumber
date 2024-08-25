@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# ----------------------------------------------------------------------
+# Simple script to query healthchecks of locally running Ruby
+#  applications. Generally intended as a healthchecks for
+# container orchestration so curl/wget are not needed
+# ----------------------------------------------------------------------
+require 'net/http'
+require 'uri'
+
+# --- Methods ---
+def get_response(endpoint)
+  Net::HTTP.get_response(endpoint)
+rescue StandardError
+  # Ignore no response
+end
+
+# --- Main ---
+endpoint = ARGV.shift || ENV.fetch('WAIT_ON_ENDPOINT', nil)
+unless endpoint
+  warn 'Error: requires an endpoint'
+  exit(1)
+end
+
+wait_on_endpoint = URI.parse(endpoint)
+
+wait_time = ENV.fetch('WAIT_ON_WAIT', 30).to_i
+
+response = wait_time.times do
+  response = get_response(wait_on_endpoint)
+  break response if response
+
+  print '.'
+  $stdout.flush
+  sleep 1
+end
+
+# Timeout
+exit(86) if response == wait_time
+
+expected_response_code = ENV.fetch('WAIT_ON_RESPONSE_CODE', '200')
+exit(response.code == expected_response_code ? 0 : 3)
