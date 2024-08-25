@@ -34,28 +34,6 @@ run_and_exit_return_code () {
   exit $run_return_code
 }
 
-wait_until_ready_if_remote_browser() {
-  if [ ! -z "${REMOTE_STATUS}" ];
-  then
-    # This assumes curl and will not operate correctly without it
-    curl --version > /dev/null 2>&1 || (echo "ERROR: curl command is not found (127)" ; exit 127)
-
-    COUNTER=0
-    echo "Waiting for remote browser at [${REMOTE_STATUS}] to become available"
-    until curl -fsSL "${REMOTE_STATUS}" >/dev/null 2>&1; do
-      printf "."
-      sleep 1
-      COUNTER=$((COUNTER + 1))
-      if [ $COUNTER -eq 30 ] ; then
-        echo "✘"
-        echo "ERROR: Timed out waiting for remote browser (99)"
-        exit 99
-      fi
-    done
-    echo "✔"
-  fi
-}
-
 # ------------
 # --- MAIN ---
 # ------------
@@ -77,7 +55,6 @@ case "$action" in
 
   "tests")
     shift
-    wait_until_ready_if_remote_browser
     run_command="bundle exec cucumber $@"
   ;;
 esac
