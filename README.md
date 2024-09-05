@@ -85,9 +85,9 @@ You can use either a VNC client or a web browser to view the tests.
 For more information, see the Selenium Standalone Image
 [VNC documentation](https://github.com/SeleniumHQ/docker-selenium#debugging)
 
-### Running Using the Default Chrome Standalone Container
+### Running Using the Default Chromium Standalone Container
 By default, the `dockercomposerun` script runs using the
-latest Selenium Standalone Chrome container.
+latest Selenium Standalone Chromium container.
 
 1. Ensure Docker is running
 2. From the project root directory, run the `dockercomposerun`
@@ -95,10 +95,6 @@ latest Selenium Standalone Chrome container.
    ```
    ./script/dockercomposerun
    ```
-
-> :apple: Apple Silicon Macs will actually run against the
-> [Seleniarm Standalone](https://github.com/seleniumhq-community/docker-seleniarm)
-> container
 
 ### Running Using Other Selenium Standalone Containers
 You can also run the tests using other Selenium Standalone
@@ -143,8 +139,6 @@ These tests use the...
 * page-object gem: [page-object on GitHub](https://github.com/cheezy/page-object)
 * Selenium Standalone Containers: [Selenium HQ on GitHub](https://github.com/SeleniumHQ/docker-selenium),
   [Selenium on Docker Hub](https://hub.docker.com/u/selenium)
-* Seleniarm Standalone Containers [Seleniarm HQ on GitHub](https://github.com/seleniumhq-community/docker-seleniarm),
-  [Seleniarm on Docker Hub](https://hub.docker.com/u/seleniarm)
 * Rubocop style enforcer and linter: [Rubocop docs](https://rubocop.org/),
   [Rubocop on GitHub](https://github.com/rubocop/rubocop)
 * bundler-audit dependency static security scanner: [bundler-audit on GitHub](https://github.com/rubysec/bundler-audit)

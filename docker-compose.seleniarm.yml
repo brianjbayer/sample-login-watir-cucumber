@@ -1,3 +1,0 @@
-services:
-  seleniumbrowser:
-    image: ${SELENIUM_IMAGE:-seleniarm/standalone-chromium:latest}
