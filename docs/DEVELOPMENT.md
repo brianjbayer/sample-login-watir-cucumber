@@ -26,10 +26,10 @@ container.
 
 #### Running Just the Development Environment
 To run the development environment on its own in the docker-compose
-environment **without a Selenium browser**, use the `-n` option for
-no Selenium and the `-d` option for the development environment...
+environment **without a Selenium browser**, use the `-o` option for
+browsertests only and the `-d` option for the development environment...
 ```
-./script/dockercomposerun -n -d
+./script/dockercomposerun -do
 ```
 
 #### Building Your Own Development Environment Image
@@ -46,7 +46,7 @@ You can also build and run your own development environment image.
    (or other browser containers) and specify your development
    environment image with `BROWSERTESTS_IMAGE`
    ```
-   BROWSERTESTS_IMAGE=browsertests-dev ./script/dockercomposerun -n -d
+   BROWSERTESTS_IMAGE=browsertests-dev ./script/dockercomposerun -do
    ```
 
 #### Specifying the Source Code Location
