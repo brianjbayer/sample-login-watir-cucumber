@@ -2,12 +2,13 @@
 
 source 'https://rubygems.org'
 
-ruby '3.3.4'
+ruby '3.3.5'
 
 gem 'bundler-audit', require: false
 gem 'cucumber'
 gem 'debug', '>= 1.0.0'
 gem 'eventually_helper'
+gem 'ostruct'
 gem 'page-object'
 gem 'rake'
 gem 'rspec'
