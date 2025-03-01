@@ -4,7 +4,7 @@
 
 #--- Base Image ---
 # Ruby version must match that in Gemfile.lock
-ARG BASE_IMAGE=ruby:3.3.5-slim-bookworm
+ARG BASE_IMAGE=ruby:3.4.2-slim-bookworm
 FROM ${BASE_IMAGE} AS ruby-base
 
 # Install packages common to builder (dev) and deploy
@@ -23,7 +23,7 @@ ARG BUNDLER_VERSION=2.6.5
 ENV BUNDLER_VERSION=${BUNDLER_VERSION}
 
 # Install base build packages
-ARG BASE_BUILD_PACKAGES='build-essential'
+ARG BASE_BUILD_PACKAGES='build-essential libyaml-dev'
 
 # Assumes debian based
 RUN apt-get update \
