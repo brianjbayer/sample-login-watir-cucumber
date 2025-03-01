@@ -19,7 +19,7 @@ RUN apt-get update \
 FROM ruby-base AS builder
 
 # Use the same version of Bundler in the Gemfile.lock
-ARG BUNDLER_VERSION=2.5.19
+ARG BUNDLER_VERSION=2.6.5
 ENV BUNDLER_VERSION=${BUNDLER_VERSION}
 
 # Install base build packages
