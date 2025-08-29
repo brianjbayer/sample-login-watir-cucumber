@@ -3,6 +3,7 @@
 require 'bundler/audit/task'
 require 'cucumber'
 require 'cucumber/rake/task'
+require 'parallel_tests/tasks'
 require 'rubocop/rake_task'
 require 'rubygems'
 
@@ -17,8 +18,22 @@ task :checks do
   Rake::Task['bundle:audit'].invoke
 end
 
-# Set (Cucumber) features as default
-Cucumber::Rake::Task.new(:features) do |t|
+# Cucumber Tasks
+Cucumber::Rake::Task.new(:cucumber) do |t|
   t.profile = 'default'
 end
-task default: :features
+
+namespace :cucumber do
+  desc 'Run Cucumber features in parallel using parallel_tests'
+  task :parallel do
+    if ENV['BROWSER'] == 'safari'
+      warn 'rake: running specs SEQUENTIALLY for safari'
+      Rake::Task[:cucumber].invoke
+    else
+      Rake::Task['parallel:features'].invoke
+    end
+  end
+end
+
+# Set the Default to running in parallel
+task default: 'cucumber:parallel'
