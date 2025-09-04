@@ -70,6 +70,8 @@ GEM
     page_navigation (0.10)
       data_magic (>= 0.22)
     parallel (1.27.0)
+    parallel_tests (5.4.0)
+      parallel
     parser (3.3.9.0)
       ast (~> 2.4.1)
       racc
@@ -157,6 +159,7 @@ DEPENDENCIES
   eventually_helper
   ostruct
   page-object
+  parallel_tests
   rake
   rspec
   rubocop

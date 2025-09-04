@@ -1,13 +1,35 @@
 #!/bin/sh
-# -----------------------------------------------
-# Project run script to run
-#   - lint
-#   - secscan
-#   - tests
-#   - or it runs all arguments
-# -----------------------------------------------
+
+# Project Commands
+be='bundle exec'
+lint_cmd="${be} rubocop"
+secscan_cmd="${be} bundle-audit check --update"
+tests_cmd="${be} cucumber"
+parallel_tests_cmd="${be} parallel_cucumber"
+
+usage() {
+  cat << USAGE
+Usage: $0 [-hp] [CMD] [ARG...]
+This is the project "run" script, executing common application tasks.
+
+If the CMD is not recognized, it runs all arguments as a command:
+  * lint:           Run the linter [$lint_cmd]
+
+  * secscan:        Run the security scanner [$secscan_cmd]
+
+  * tests:          Run the tests (cucumber) [$tests_cmd]
+                    (in parallel if -p specified) [$parallel_tests_cmd]
+
+  * [CMD] [ARG...]: Run any other command with arguments
+
+OPTIONS: (in override order)
+  -h: Show this help message
+  -p: if supported by the CMD, runs in parallel
+USAGE
+}
 
 # --- Functions ---
+
 run_and_exit_return_code () {
   # Exit script on any errors
   set -e
@@ -40,22 +62,39 @@ run_and_exit_return_code () {
 # Exit script on any errors
 set -e
 
+while getopts ":hp" options; do
+  case "${options}" in
+    p)
+      parallel=1
+      ;;
+    h)
+      usage ; exit
+      ;;
+    \?)
+      usage
+      err_exit 1 "Invalid Option: -$OPTARG"
+      ;;
+  esac
+done
+shift $((OPTIND-1))
+
 # set run command if recognized action
 action="${1}"
 case "$action" in
   "lint")
     shift
-    run_command="bundle exec rubocop $@"
+    run_command="${lint_cmd} $@"
   ;;
 
   "secscan")
     shift
-    run_command="bundle exec bundle-audit check --update $@"
+    run_command="${secscan_cmd} $@"
   ;;
 
   "tests")
     shift
-    run_command="bundle exec cucumber $@"
+    run_command="${tests_cmd} $@"
+    [ -n "${parallel}" ] && run_command="${parallel_tests_cmd} $@"
   ;;
 esac
 

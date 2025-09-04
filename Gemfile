@@ -10,6 +10,7 @@ gem 'debug', '>= 1.0.0'
 gem 'eventually_helper'
 gem 'ostruct'
 gem 'page-object'
+gem 'parallel_tests'
 gem 'rake'
 gem 'rspec'
 gem 'rubocop', require: false

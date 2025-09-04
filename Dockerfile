@@ -81,4 +81,4 @@ COPY --chown=deployer . /app/
 
 # Run the tests but allow override
 # Expects the wait_on_endpoint script environment variables to be set
-CMD ["bash", "-c", "./wait_on_endpoint && bundle exec cucumber"]
+CMD ["bash", "-c", "./wait_on_endpoint && ./script/run -p tests"]
