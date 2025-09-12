@@ -58,10 +58,11 @@ jobs:
     needs:
       - image-names
       - buildx-and-push-unvetted-image
-    uses: ./.github/workflows/run-e2e-tests.yml
+    uses: brianjbayer/sample-login-capybara-rspec/.github/workflows/run-e2e-tests.yml@f76bbee64f7fc1b08458c271a7b8e178d0fedea2
     with:
       e2e_tests_image: ${{ needs.image-names.outputs.unvetted_image }}
       e2e_tests_command: "./script/dockercomposerun -c"
+      browsers: "['chrome', 'firefox', 'edge']"
     secrets:
       login_username: ${{ secrets.LOGIN_USERNAME }}
       login_password: ${{ secrets.LOGIN_PASSWORD }}
@@ -72,10 +73,11 @@ jobs:
     needs:
       - image-names
       - buildx-and-push-dev-image
-    uses: ./.github/workflows/run-e2e-tests.yml
+    uses: brianjbayer/sample-login-capybara-rspec/.github/workflows/run-e2e-tests.yml@f76bbee64f7fc1b08458c271a7b8e178d0fedea2
     with:
       e2e_tests_image: ${{ needs.image-names.outputs.dev_image }}
       e2e_tests_command: "./script/dockercomposerun -d bash -c './wait_on_endpoint && ./script/run -p tests'"
+      browsers: "['chrome', 'firefox', 'edge']"
     secrets:
       login_username: ${{ secrets.LOGIN_USERNAME }}
       login_password: ${{ secrets.LOGIN_PASSWORD }}

@@ -1,46 +1,57 @@
 #!/bin/sh
 
-# Project Commands
+# --- Project Commands ---
+# Running tests
+tests='cucumber'
+parallel_tests='parallel_cucumber'
+
+# Code standards
+lint='rubocop'
+secscan='bundle-audit check --update'
+
 be='bundle exec'
-lint_cmd="${be} rubocop"
-secscan_cmd="${be} bundle-audit check --update"
-tests_cmd="${be} cucumber"
-parallel_tests_cmd="${be} parallel_cucumber"
+lint_cmd="${be} ${lint}"
+secscan_cmd="${be} ${secscan}"
+tests_cmd="${be} ${tests}"
+parallel_tests_cmd="${be} ${parallel_tests}"
 
 usage() {
   cat << USAGE
-Usage: $0 [-hp] [CMD] [ARG...]
+Usage: $0 [-hp] [COMMAND] [ARG...]
 This is the project "run" script, executing common application tasks.
 
-If the CMD is not recognized, it runs all arguments as a command:
-  * lint:           Run the linter [$lint_cmd]
+If the COMMAND is not recognized, it runs all arguments as a command:
 
-  * secscan:        Run the security scanner [$secscan_cmd]
+COMMANDS:
+  lint:     Run the linter [$lint_cmd]
 
-  * tests:          Run the tests (cucumber) [$tests_cmd]
-                    (in parallel if -p specified) [$parallel_tests_cmd]
+  secscan:  Run the security scanner [$secscan_cmd]
 
-  * [CMD] [ARG...]: Run any other command with arguments
+  tests:    Run the tests [$tests_cmd]
+            (in parallel if -p specified) [$parallel_tests_cmd]
 
-OPTIONS: (in override order)
+  [COMMAND] [ARG...]: Run any other command with arguments
+
+OPTIONS:
   -h: Show this help message
-  -p: if supported by the CMD, runs in parallel
+  -p: if supported by the COMMAND, runs in parallel
 USAGE
 }
 
 # --- Functions ---
+err_exit() {
+  err_code=$1
+  err_msg="$2"
+  echo "${err_msg} (${err_code})" 1>&2
+  exit $err_code
+}
 
 run_and_exit_return_code () {
   # Exit script on any errors
   set -e
 
-  # Set to all positional parameters each expanding
-  # to a separate word
   command_to_run="$@"
-  if [ -z "$command_to_run" ]; then
-    echo "ERROR: Function requires a command argument (86)"
-    exit 86
-  fi
+  [ -z "$command_to_run" ] && err_exit 1 "Missing argument"
 
   # Run the command and preserve exit code
   echo "RUNNING [${command_to_run} ]..."
@@ -56,9 +67,7 @@ run_and_exit_return_code () {
   exit $run_return_code
 }
 
-# ------------
 # --- MAIN ---
-# ------------
 # Exit script on any errors
 set -e
 
@@ -78,34 +87,27 @@ while getopts ":hp" options; do
 done
 shift $((OPTIND-1))
 
-# set run command if recognized action
-action="${1}"
-case "$action" in
-  "lint")
-    shift
-    run_command="${lint_cmd} $@"
-  ;;
+# Set command to run if recognized COMMAND
+command="${1}"
 
-  "secscan")
-    shift
-    run_command="${secscan_cmd} $@"
-  ;;
+[ "$command" = 'lint' ] && run_command="${lint_cmd}"
 
-  "tests")
-    shift
-    run_command="${tests_cmd} $@"
-    [ -n "${parallel}" ] && run_command="${parallel_tests_cmd} $@"
-  ;;
-esac
+[ "$command" = 'secscan' ] && run_command="${secscan_cmd}"
 
-if [ -z "$run_command" ]; then
-  # No recognized actions so run all the arguments as the command"
-  run_command="$@"
+if [ "$command" = 'tests' ] ; then
+  run_command="${tests_cmd}"
+  [ -n "${parallel}" ] && run_command="${parallel_tests_cmd}"
+fi
+
+if [ -n "$run_command" ]; then
+  shift
+  run_command="${run_command} $@"
+  echo "RUNNING COMMAND [${action}]"
 else
-  echo "RUNNING Action [${action}]"
+# No recognized actions so run all the arguments as the command"
+  run_command="$@"
 fi
 
 # Run the command and exit passing any arguments
 run_and_exit_return_code "$run_command"
-echo "ERROR: should have exited!!! (99)"
-exit 99
+err_exit 99 "LOGIC ERROR"
