@@ -170,7 +170,7 @@ DEPENDENCIES
   selenium-webdriver
 
 RUBY VERSION
-  ruby 3.4.7p58
+  ruby 4.0.1
 
 BUNDLED WITH
   4.0.5
