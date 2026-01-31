@@ -1,6 +1,7 @@
 # sample-login-watir-cucumber
 
 ## Overview
+
 This is an example of End-To-End (E2E) Tests/Acceptance Test
 Driven Development (ATDD) using
 [Watir](http://watir.com), [Cucumber](https://cucumber.io),
@@ -10,6 +11,7 @@ Driven Development (ATDD) using
 can be reused by replacing the existing tests.**
 
 These tests show how to use Watir-Cucumber to verify...
+
 * The ability to login as a user
 * That critical elements are on a page
 
@@ -17,14 +19,18 @@ It also demonstrates the basic features of the
 Watir-Cucumber framework and how they can be extended.
 
 ## Run Locally or in Containers
+
 This project can be run...
+
 * Locally containerized in 2 separate Docker containers:
   one containing the tests, the other the browser
 * Locally natively running the tests against a local browser
   or a containerized browser
 
 ## Contents of this Framework
+
 This framework contains support for...
+
 * Using Selenium Standalone containers eliminating the need
   for locally installed browsers or drivers
 * Multiple local browsers with automatic driver management
@@ -40,6 +46,7 @@ This framework contains support for...
   [GitHub Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
 
 ## Prerequisites
+
 Before being able to run this project, you must follow the requirements
 in the [PREREQUISITES.md](docs/PREREQUISITES.md)
 
@@ -61,6 +68,7 @@ You can view the running tests using the included
 Virtual Network Computing (VNC) server.
 
 ### Seeing the Tests Run
+
 > Browsers in the containers are not visible in the VNC server
 > when running headless
 
@@ -82,17 +90,20 @@ For more information, see the Selenium Standalone Image
 [VNC documentation](https://github.com/SeleniumHQ/docker-selenium#debugging)
 
 ### Running Using the Default Chromium Standalone Container
+
 By default, the `dockercomposerun` script runs using the
 latest Selenium Standalone Chromium container.
 
 1. Ensure Docker is running
 2. From the project root directory, run the `dockercomposerun`
    script with the defaults...
-   ```
+
+   ```bash
    ./script/dockercomposerun
    ```
 
 ### Running Using Other Selenium Standalone Containers
+
 You can also run the tests using other Selenium Standalone
 containers (such as Firefox and Edge) with the docker compose
 framework.
@@ -101,23 +112,30 @@ For more information, see
 [RUNNING_WITH_OTHER_CONTAINERS.md](docs/RUNNING_WITH_OTHER_CONTAINERS.md).
 
 ### Running Interactively (i.e. "Shell In")
+
 You can run the tests interactively by "shelling in" to the
 test container.
 
 1. Ensure Docker is running
+
 2. From the project root directory, run the `dockercomposerun`
    script and supply the shell command `sh`...
-   ```
+
+   ```bash
    ./script/dockercomposerun sh
    ```
+
 3. Run desired commands in the container
    (e.g. `bundle exec rake`)
+
 4. Run the exit command to exit the Test container
-   ```
+
+   ```bash
    exit
    ```
 
 ## Running Natively and Environment Variables
+
 Assuming that you have a Ruby development environment,
 the tests either can be run directly by the Cucumber
 runner or by the supplied Rakefile.
@@ -125,13 +143,16 @@ runner or by the supplied Rakefile.
 For more information, see [RUNNING_NATIVELY.md](docs/RUNNING_NATIVELY.md).
 
 ## Development
+
 This project can be developed using the supplied container-based
 development environment which includes `vim` and `git`.
 
 For more information, see [DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
 ## Sources and Additional Information
+
 These tests use the...
+
 * page-object gem: [page-object on GitHub](https://github.com/cheezy/page-object)
 * Selenium Standalone Containers: [Selenium HQ on GitHub](https://github.com/SeleniumHQ/docker-selenium),
   [Selenium on Docker Hub](https://hub.docker.com/u/selenium)
