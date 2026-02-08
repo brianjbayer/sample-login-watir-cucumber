@@ -37,7 +37,7 @@ response = wait_time.times do
 end
 
 # Timeout
-exit(86) if response == wait_time
+exit(124) if response == wait_time
 
 expected_response_code = ENV.fetch('WAIT_ON_RESPONSE_CODE', '200')
 exit(response.code == expected_response_code ? 0 : 3)
