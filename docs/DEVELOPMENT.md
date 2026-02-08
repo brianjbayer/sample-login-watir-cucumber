@@ -1,4 +1,5 @@
 ## Development of sample-login-watir-cucumber
+
 This project can be developed using the supplied container-based
 development environment which includes `vim` and `git`.
 
@@ -9,14 +10,17 @@ By default the development environment container executes the
 `/bin/bash` shell providing a command line interface.
 
 ### Prerequisites
+
 Before being able to run this project, you must follow the requirements
 in the [PREREQUISITES.md](PREREQUISITES.md)
 
 ### To Develop Using the Container-Based Development Environment
+
 The easiest way to run the containerized development environment is with
-the docker-compose framework using the `dockercomposerun` script with the
+the docker compose framework using the `dockercomposerun` script with the
 `-d` (development environment) option...
-```
+
+```bash
 ./script/dockercomposerun -d
 ```
 
@@ -25,39 +29,47 @@ project along with the Chrome [Selenium Standalone](https://github.com/SeleniumH
 container.
 
 #### Running Just the Development Environment
-To run the development environment on its own in the docker-compose
+
+To run the development environment on its own in the docker compose
 environment **without a Selenium browser**, use the `-o` option for
 browsertests only and the `-d` option for the development environment...
-```
+
+```bash
 ./script/dockercomposerun -do
 ```
 
 #### Building Your Own Development Environment Image
+
 You can also build and run your own development environment image.
 
 1. Build your development environment image specifying the `devenv` build
    stage as the target and supplying a name (tag) for the image.
-   ```
+
+   ```bash
    docker build --no-cache --target devenv -t browsertests-dev .
    ```
 
-2. Run your development environment image in the docker-compose
+2. Run your development environment image in the docker compose
    environment either on its own or with the Selenium Chrome
    (or other browser containers) and specify your development
    environment image with `BROWSERTESTS_IMAGE`
-   ```
+
+   ```bash
    BROWSERTESTS_IMAGE=browsertests-dev ./script/dockercomposerun -do
    ```
 
 #### Specifying the Source Code Location
+
 To use another directory as the source code for the development
 environment, set the `BROWSERTESTS_SRC` environment variable.
 For example...
-```
+
+```bash
 BROWSERTESTS_SRC=${PWD} BROWSERTESTS_IMAGE=browsertests-dev ./script/dockercomposerun -d
 ```
 
 #### Running the Tests, Linting, and Security Scanning
+
 To run the tests, linting, and security scanning in the development
 environment like CI, use the `run` script.
 
@@ -65,16 +77,19 @@ If you are running interactively (command line) in the development
 environment...
 
 * To run the **tests**...
-  ```
+
+  ```bash
   ./script/run tests
   ```
 
 * To run the **linting**...
-  ```
+
+  ```bash
   ./script/run lint
   ```
 
 * To run the dependency **security scan**...
-  ```
+
+  ```bash
   ./script/run secscan
   ```

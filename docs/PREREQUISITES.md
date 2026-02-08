@@ -7,19 +7,22 @@ In order to run this project...
 
 2. To run the tests, you must set the required environment
    variable and value...
-   ```
+
+   ```bash
    BASE_URL='https://the-internet.herokuapp.com'
    ```
 
 3. To run the tests, you must set the required secret
    environment variable and value...
-   ```
+
+   ```bash
    LOGIN_USERNAME=tomsmith
    ```
 
 4. To run the tests, you must set the required secret
    environment variable and value...
-   ```
+
+   ```bash
    LOGIN_PASSWORD=SuperSecretPassword!
    ```
 
@@ -27,6 +30,7 @@ In order to run this project...
 > basic secret management
 
 ### Optional: Creating a `.env` File
+
 You can create a file named `.env` in the project root directory
 that contains the required environment variables that will
 be used by default by docker compose instead of setting them on
@@ -34,7 +38,7 @@ the command line...
 
 > :no_entry_sign: However your `.env` file will not be used when running natively
 
-```
+```bash
 BASE_URL='https://the-internet.herokuapp.com'
 LOGIN_USERNAME=tomsmith
 LOGIN_PASSWORD=SuperSecretPassword!
