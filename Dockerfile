@@ -8,7 +8,7 @@ ARG BASE_IMAGE=ruby:4.0.1-slim-trixie
 FROM ${BASE_IMAGE} AS ruby-base
 
 # Use the same version of Bundler in the Gemfile.lock
-ARG BUNDLER_VERSION=4.0.5
+ARG BUNDLER_VERSION=4.0.6
 ENV BUNDLER_VERSION=${BUNDLER_VERSION}
 
 #--- Builder Stage ---
@@ -16,6 +16,8 @@ FROM ruby-base AS builder
 
 # Install base build packages
 ARG BASE_BUILD_PACKAGES='build-essential libyaml-dev'
+
+ARG BUNDLER_PATH=/usr/local/bundle
 
 # Assumes debian based
 RUN apt-get update \
@@ -25,7 +27,9 @@ RUN apt-get update \
   # Update gem command to latest
   && gem update --system \
   # Install bundler
-  && gem install bundler:${BUNDLER_VERSION}
+  && gem install bundler:${BUNDLER_VERSION} \
+  # Configure bundler to use isolated gem path
+  && bundle config set --local path ${BUNDLER_PATH}
 
 # Install the Ruby dependencies (defined in the Gemfile/Gemfile.lock)
 WORKDIR /app
