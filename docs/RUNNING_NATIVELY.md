@@ -6,7 +6,7 @@ runner or by the supplied Rakefile.
 
 ### Prerequisites
 
-* Ruby 4.0.1
+* Ruby 4
 * To run the tests using a specific browser requires that browser
 be installed
 (e.g. to run the tests in the Chrome Browser requires
