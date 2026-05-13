@@ -1,2 +1,5 @@
 # Exclude any environment variable dirs/files in root
 .env*
+
+# IDEs
+.vscode/
