@@ -13,24 +13,24 @@ in the [PREREQUISITES.md](PREREQUISITES.md)
 
 1. Ensure Docker is running
 2. From the project root directory, run the `dockercomposerun`
-   script setting the `BROWSER` and `SELENIUM_IMAGE`
+   script setting the `BROWSER_TYPE` and `SELENIUM_IMAGE`
    environment variables to specify Firefox...
 
    ```bash
-   BROWSER=firefox SELENIUM_IMAGE=selenium/standalone-firefox ./script/dockercomposerun
+   BROWSER_TYPE=firefox SELENIUM_IMAGE=selenium/standalone-firefox ./script/dockercomposerun
    ```
 
 ### To Run Using the Edge Standalone Container
 
 1. Ensure Docker is running
 2. From the project root directory, run the `dockercomposerun`
-   script setting the `BROWSER` and `SELENIUM_IMAGE`
+   script setting the `BROWSER_TYPE` and `SELENIUM_IMAGE`
    environment variables to specify Edge...
 
    **For Intel/x86/amd64 run...**
 
    ```bash
-   BROWSER=edge SELENIUM_IMAGE=selenium/standalone-edge ./script/dockercomposerun
+   BROWSER_TYPE=edge SELENIUM_IMAGE=selenium/standalone-edge ./script/dockercomposerun
    ```
 
    **:apple: For Apple Silicon/arm64...**

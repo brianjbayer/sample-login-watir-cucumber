@@ -33,13 +33,13 @@ see the [PREREQUISITES.md](PREREQUISITES.md)
 
 #### Specify Browser
 
-`BROWSER=`...
+`BROWSER_TYPE=`...
 
 **Example:**
 
-`BROWSER=chrome`
+`BROWSER_TYPE=chrome`
 
-> **If the `BROWSER` environment variable is not provided (i.e. set),
+> **If the `BROWSER_TYPE` environment variable is not provided (i.e. set),
 > then the default Watir (Chrome) browser is used**
 
 Mostly, this uses a _pass-through_ approach and should support any
@@ -77,13 +77,13 @@ The following browsers were working on Mac at the time of this commit...
 
 #### Specify Remote (Container) URL
 
-`REMOTE=`...
+`REMOTE_BROWSER=`...
 
 Specifying a Remote URL creates a remote browser of type
 specified by `BROWSER` at the specified remote URL
 
  **Example:**
-`REMOTE='http://localhost:4444/wd/hub'`
+`REMOTE_BROWSER='http://localhost:4444/wd/hub'`
 
 ### Examples of Running the Tests
 
@@ -100,7 +100,7 @@ bundle exec cucumber
 #### Local Browsers
 
 ```
-BROWSER=firefox HEADLESS=true bundle exec rake
+BROWSER_TYPE=firefox HEADLESS=true bundle exec rake
 ```
 
 #### Using the Selenium Standalone Containers
@@ -122,5 +122,5 @@ For specifics, see the Selenium Standalone Image
 3. Run the tests specifying the remote Selenium container...
 
    ```bash
-   REMOTE='http://localhost:4444/wd/hub' BROWSER=chrome bundle exec cucumber
+   REMOTE_BROWSER='http://localhost:4444/wd/hub' BROWSER_TYPE=chrome bundle exec cucumber
    ```

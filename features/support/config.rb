@@ -19,11 +19,11 @@ module Config
   # Configuration for Watir-driven browser
   module Watir
     def browser
-      ENV.fetch('BROWSER', nil)
+      ENV.fetch('BROWSER_TYPE', nil)
     end
 
     def remote_browser_url
-      ENV.fetch('REMOTE', nil)
+      ENV.fetch('REMOTE_BROWSER', nil)
     end
 
     def headless?

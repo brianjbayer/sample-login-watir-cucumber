@@ -26,7 +26,7 @@ end
 namespace :cucumber do
   desc 'Run Cucumber features in parallel using parallel_tests'
   task :parallel do
-    if ENV['BROWSER'] == 'safari'
+    if ENV['BROWSER_TYPE'] == 'safari'
       warn 'rake: running specs SEQUENTIALLY for safari'
       Rake::Task[:cucumber].invoke
     else
