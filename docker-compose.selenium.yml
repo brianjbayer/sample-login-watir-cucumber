@@ -18,8 +18,8 @@ services:
     volumes:
       - /dev/shm:/dev/shm
     ports:
-      - "5900:5900"
-      - "7900:7900"
+      - "${SELENIUM_LOCALHOST_VNC_PORT:-5900}:5900"
+      - "${SELENIUM_LOCALHOST_VNC_WEB_PORT:-7900}:7900"
     environment:
       # The number of browser sessions should correspond to parallelism
       - SE_NODE_MAX_SESSIONS=2
