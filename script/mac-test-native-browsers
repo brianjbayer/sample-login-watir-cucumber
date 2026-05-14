@@ -24,8 +24,8 @@ run_command () {
 }
 
 set_browser_env () {
-  export BROWSER="$@"
-  echo "BROWSER=${BROWSER-unset}"
+  export BROWSER_TYPE="$@"
+  echo "BROWSER_TYPE=${BROWSER_TYPE-unset}"
 }
 
 set_headless_env () {

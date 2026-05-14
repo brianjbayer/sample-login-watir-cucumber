@@ -1,0 +1,38 @@
+{
+  "name": "Sample Login DevContainer",
+
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "../docker-compose.selenium.yml",
+    "../docker-compose.dev.yml"
+  ],
+
+  "service": "browsertests",
+  "workspaceFolder": "/app",
+  "overrideCommand": true,
+
+  // "postStartCommand": "bundle install",
+  "remoteUser": "root",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "davidanson.vscode-markdownlint",
+        "eamodio.gitlens",
+        "github.vscode-github-actions",
+        "ms-azuretools.vscode-containers",
+        "ms-azuretools.vscode-docker",
+        "ms-vscode-remote.remote-containers",
+        "redhat.vscode-yaml",
+        "shopify.ruby-lsp",
+        "streetsidesoftware.code-spell-checker"
+      ],
+      "settings": {
+        "terminal.integrated.shell.linux": "bash",
+        "ruby.useBundler": true
+      }
+    }
+  },
+
+  "shutdownAction": "stopCompose"
+}
