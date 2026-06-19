@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '4.0.3'
+ruby '4.0.5'
 
 gem 'bundler-audit', require: false
 gem 'cucumber'
