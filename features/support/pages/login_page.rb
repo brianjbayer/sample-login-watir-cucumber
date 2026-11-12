@@ -4,8 +4,8 @@
 class LoginPage < BasePage
   page_url "#{page_base_url}/login"
 
-  text_field(:username,  name: 'username')
-  text_field(:password,  name: 'password')
+  text_field(:username, name: 'username')
+  text_field(:password, name: 'password')
   button(:login_button, text: 'Login')
 
   div(:login_error, id: 'flash')
