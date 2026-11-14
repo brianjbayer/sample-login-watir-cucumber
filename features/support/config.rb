@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Config
-  # Configuration for PageObject pages
-  module Pages
-    def page_base_url
+  # Test Pages
+  module PageObjects
+    def base_url
       ENV.fetch('BASE_URL')
     end
 
@@ -18,7 +18,7 @@ module Config
 
   # Configuration for Watir-driven browser
   module Watir
-    def browser
+    def browser_type
       ENV.fetch('BROWSER_TYPE', nil)
     end
 
