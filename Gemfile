@@ -7,9 +7,7 @@ ruby '4.0.9'
 gem 'bundler-audit', require: false
 gem 'cucumber'
 gem 'debug', '>= 1.0.0'
-gem 'eventually_helper'
 gem 'ostruct'
-gem 'page-object'
 gem 'parallel_tests'
 gem 'rake'
 gem 'rspec'
@@ -17,3 +15,4 @@ gem 'rubocop', require: false
 gem 'rubocop-rake', require: false
 gem 'rubocop-rspec', require: false
 gem 'selenium-webdriver'
+gem 'watir'

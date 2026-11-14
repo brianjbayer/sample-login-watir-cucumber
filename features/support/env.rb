@@ -2,17 +2,16 @@
 
 require 'debug'
 require 'rspec'
-require 'page-object'
-require 'eventually_helper'
+require 'watir'
 
 require_relative 'config'
+require_relative 'page_objects'
+require_relative 'watir_cucumber'
 
-# This really needs be an include since we do want configuration global
-# and it throws an exception with World(Config::Pages)
+# Configuration is shared with browser setup hooks.
 # rubocop:disable Style/MixinUsage
-include Config::Pages
+include Config::PageObjects
 include Config::Watir
 # rubocop:enable Style/MixinUsage
 
-World(PageObject::PageFactory)
-World(EventuallyHelper)
+World(WatirCucumber, PageObjects)

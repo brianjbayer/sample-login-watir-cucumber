@@ -153,7 +153,7 @@ For more information, see [DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
 These tests use the...
 
-* page-object gem: [page-object on GitHub](https://github.com/cheezy/page-object)
+* Watir: [Watir on GitHub](https://github.com/watir/watir)
 * Selenium Standalone Containers: [Selenium HQ on GitHub](https://github.com/SeleniumHQ/docker-selenium),
   [Selenium on Docker Hub](https://hub.docker.com/u/selenium)
 * Rubocop style enforcer and linter: [Rubocop docs](https://rubocop.org/),

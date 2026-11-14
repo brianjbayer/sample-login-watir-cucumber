@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
 Given(/^user is on the login page$/) do
-  visit(LoginPage) { |page| expect(page.current_url).to eq(page.page_url_value) }
+  login_page.visit!
 end
 
 ### THEN STEPS ###
-Then(/^there must be a place for a username$/) do
-  expect(on(LoginPage).username?).to be true
+Then(/^there must be a place to enter a username$/) do
+  login_page.username!
 end
 
-Then(/^there must be a place for a password$/) do
-  expect(on(LoginPage).password?).to be true
+Then(/^there must be a place to enter a password$/) do
+  login_page.password!
 end
 
 Then(/^there must be a login button$/) do
-  expect(on(LoginPage).login_button?).to be true
+  login_page.login_button!
 end
